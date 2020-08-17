@@ -1,0 +1,757 @@
+{
+  "version": "1.0.0",
+  "name": "magick-image-reader",
+  "displayName": "Magick Image Reader",
+  "author": "Elypia",
+  "publisher": "elypia",
+  "homepage": "https://gitlab.com/Elypia/magick-image-reader#readme",
+  "description": "Uses ImageMagick to add read-only views of over 100 image formats in Visual Studio Code.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "imagemagick",
+    "elypia",
+    "vsc",
+    "visual-studio-code"
+  ],
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Elypia/magick-image-reader.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/Elypia/magick-image-reader/issues"
+  },
+  "main": "./out/extension.js",
+  "engines": {
+    "vscode": "^1.48.0"
+  },
+  "activationEvents": [
+    "onCustomEditor:magickImageReader.readImage",
+    "onView:magickImageReader.layerViewer"
+  ],
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "magickImageReader.readImage",
+        "displayName": "Magick Image Reader",
+        "selector": [
+          {
+            "filenamePattern": "*.3fr"
+          },
+          {
+            "filenamePattern": "*.3g2"
+          },
+          {
+            "filenamePattern": "*.3gp"
+          },
+          {
+            "filenamePattern": "*.a"
+          },
+          {
+            "filenamePattern": "*.aai"
+          },
+          {
+            "filenamePattern": "*.ai"
+          },
+          {
+            "filenamePattern": "*.art"
+          },
+          {
+            "filenamePattern": "*.arw"
+          },
+          {
+            "filenamePattern": "*.avi"
+          },
+          {
+            "filenamePattern": "*.avif"
+          },
+          {
+            "filenamePattern": "*.avs"
+          },
+          {
+            "filenamePattern": "*.b"
+          },
+          {
+            "filenamePattern": "*.bgr"
+          },
+          {
+            "filenamePattern": "*.bgra"
+          },
+          {
+            "filenamePattern": "*.bgro"
+          },
+          {
+            "filenamePattern": "*.bmp"
+          },
+          {
+            "filenamePattern": "*.bmp2"
+          },
+          {
+            "filenamePattern": "*.bmp3"
+          },
+          {
+            "filenamePattern": "*.c"
+          },
+          {
+            "filenamePattern": "*.cal"
+          },
+          {
+            "filenamePattern": "*.cals"
+          },
+          {
+            "filenamePattern": "*.canvas"
+          },
+          {
+            "filenamePattern": "*.caption"
+          },
+          {
+            "filenamePattern": "*.cin"
+          },
+          {
+            "filenamePattern": "*.clip"
+          },
+          {
+            "filenamePattern": "*.cmyk"
+          },
+          {
+            "filenamePattern": "*.cmyka"
+          },
+          {
+            "filenamePattern": "*.cr2"
+          },
+          {
+            "filenamePattern": "*.cr3"
+          },
+          {
+            "filenamePattern": "*.crw"
+          },
+          {
+            "filenamePattern": "*.cube"
+          },
+          {
+            "filenamePattern": "*.cur"
+          },
+          {
+            "filenamePattern": "*.cut"
+          },
+          {
+            "filenamePattern": "*.data"
+          },
+          {
+            "filenamePattern": "*.dcm"
+          },
+          {
+            "filenamePattern": "*.dcr"
+          },
+          {
+            "filenamePattern": "*.dcraw"
+          },
+          {
+            "filenamePattern": "*.dcx"
+          },
+          {
+            "filenamePattern": "*.dds"
+          },
+          {
+            "filenamePattern": "*.dfont"
+          },
+          {
+            "filenamePattern": "*.dng"
+          },
+          {
+            "filenamePattern": "*.dpx"
+          },
+          {
+            "filenamePattern": "*.dxt1"
+          },
+          {
+            "filenamePattern": "*.dxt5"
+          },
+          {
+            "filenamePattern": "*.epdf"
+          },
+          {
+            "filenamePattern": "*.epi"
+          },
+          {
+            "filenamePattern": "*.eps"
+          },
+          {
+            "filenamePattern": "*.epsf"
+          },
+          {
+            "filenamePattern": "*.epsi"
+          },
+          {
+            "filenamePattern": "*.ept"
+          },
+          {
+            "filenamePattern": "*.ept2"
+          },
+          {
+            "filenamePattern": "*.ept3"
+          },
+          {
+            "filenamePattern": "*.erf"
+          },
+          {
+            "filenamePattern": "*.fax"
+          },
+          {
+            "filenamePattern": "*.file"
+          },
+          {
+            "filenamePattern": "*.fits"
+          },
+          {
+            "filenamePattern": "*.flv"
+          },
+          {
+            "filenamePattern": "*.fractal"
+          },
+          {
+            "filenamePattern": "*.ftp"
+          },
+          {
+            "filenamePattern": "*.fts"
+          },
+          {
+            "filenamePattern": "*.g"
+          },
+          {
+            "filenamePattern": "*.g3"
+          },
+          {
+            "filenamePattern": "*.g4"
+          },
+          {
+            "filenamePattern": "*.gif"
+          },
+          {
+            "filenamePattern": "*.gif87"
+          },
+          {
+            "filenamePattern": "*.gradient"
+          },
+          {
+            "filenamePattern": "*.gray"
+          },
+          {
+            "filenamePattern": "*.graya"
+          },
+          {
+            "filenamePattern": "*.group4"
+          },
+          {
+            "filenamePattern": "*.hald"
+          },
+          {
+            "filenamePattern": "*.hdr"
+          },
+          {
+            "filenamePattern": "*.heic"
+          },
+          {
+            "filenamePattern": "*.hrz"
+          },
+          {
+            "filenamePattern": "*.htm"
+          },
+          {
+            "filenamePattern": "*.html"
+          },
+          {
+            "filenamePattern": "*.http"
+          },
+          {
+            "filenamePattern": "*.https"
+          },
+          {
+            "filenamePattern": "*.icb"
+          },
+          {
+            "filenamePattern": "*.ico"
+          },
+          {
+            "filenamePattern": "*.icon"
+          },
+          {
+            "filenamePattern": "*.iiq"
+          },
+          {
+            "filenamePattern": "*.inline"
+          },
+          {
+            "filenamePattern": "*.ipl"
+          },
+          {
+            "filenamePattern": "*.j2c"
+          },
+          {
+            "filenamePattern": "*.j2k"
+          },
+          {
+            "filenamePattern": "*.jng"
+          },
+          {
+            "filenamePattern": "*.jnx"
+          },
+          {
+            "filenamePattern": "*.jp2"
+          },
+          {
+            "filenamePattern": "*.jpc"
+          },
+          {
+            "filenamePattern": "*.jpe"
+          },
+          {
+            "filenamePattern": "*.jpeg"
+          },
+          {
+            "filenamePattern": "*.jpg"
+          },
+          {
+            "filenamePattern": "*.jpm"
+          },
+          {
+            "filenamePattern": "*.jps"
+          },
+          {
+            "filenamePattern": "*.jpt"
+          },
+          {
+            "filenamePattern": "*.k"
+          },
+          {
+            "filenamePattern": "*.k25"
+          },
+          {
+            "filenamePattern": "*.kdc"
+          },
+          {
+            "filenamePattern": "*.label"
+          },
+          {
+            "filenamePattern": "*.m"
+          },
+          {
+            "filenamePattern": "*.m2v"
+          },
+          {
+            "filenamePattern": "*.m4v"
+          },
+          {
+            "filenamePattern": "*.mac"
+          },
+          {
+            "filenamePattern": "*.map"
+          },
+          {
+            "filenamePattern": "*.mask"
+          },
+          {
+            "filenamePattern": "*.mat"
+          },
+          {
+            "filenamePattern": "*.mef"
+          },
+          {
+            "filenamePattern": "*.miff"
+          },
+          {
+            "filenamePattern": "*.mkv"
+          },
+          {
+            "filenamePattern": "*.mng"
+          },
+          {
+            "filenamePattern": "*.mono"
+          },
+          {
+            "filenamePattern": "*.mov"
+          },
+          {
+            "filenamePattern": "*.mp4"
+          },
+          {
+            "filenamePattern": "*.mpc"
+          },
+          {
+            "filenamePattern": "*.mpeg"
+          },
+          {
+            "filenamePattern": "*.mpg"
+          },
+          {
+            "filenamePattern": "*.mrw"
+          },
+          {
+            "filenamePattern": "*.msl"
+          },
+          {
+            "filenamePattern": "*.msvg"
+          },
+          {
+            "filenamePattern": "*.mtv"
+          },
+          {
+            "filenamePattern": "*.mvg"
+          },
+          {
+            "filenamePattern": "*.nef"
+          },
+          {
+            "filenamePattern": "*.nrw"
+          },
+          {
+            "filenamePattern": "*.null"
+          },
+          {
+            "filenamePattern": "*.o"
+          },
+          {
+            "filenamePattern": "*.orf"
+          },
+          {
+            "filenamePattern": "*.otb"
+          },
+          {
+            "filenamePattern": "*.otf"
+          },
+          {
+            "filenamePattern": "*.pal"
+          },
+          {
+            "filenamePattern": "*.palm"
+          },
+          {
+            "filenamePattern": "*.pango"
+          },
+          {
+            "filenamePattern": "*.pattern"
+          },
+          {
+            "filenamePattern": "*.pbm"
+          },
+          {
+            "filenamePattern": "*.pcd"
+          },
+          {
+            "filenamePattern": "*.pcds"
+          },
+          {
+            "filenamePattern": "*.pct"
+          },
+          {
+            "filenamePattern": "*.pcx"
+          },
+          {
+            "filenamePattern": "*.pdb"
+          },
+          {
+            "filenamePattern": "*.pdf"
+          },
+          {
+            "filenamePattern": "*.pdfa"
+          },
+          {
+            "filenamePattern": "*.pef"
+          },
+          {
+            "filenamePattern": "*.pes"
+          },
+          {
+            "filenamePattern": "*.pfa"
+          },
+          {
+            "filenamePattern": "*.pfb"
+          },
+          {
+            "filenamePattern": "*.pfm"
+          },
+          {
+            "filenamePattern": "*.pgm"
+          },
+          {
+            "filenamePattern": "*.pgx"
+          },
+          {
+            "filenamePattern": "*.picon"
+          },
+          {
+            "filenamePattern": "*.pict"
+          },
+          {
+            "filenamePattern": "*.pix"
+          },
+          {
+            "filenamePattern": "*.pjpeg"
+          },
+          {
+            "filenamePattern": "*.plasma"
+          },
+          {
+            "filenamePattern": "*.png"
+          },
+          {
+            "filenamePattern": "*.png00"
+          },
+          {
+            "filenamePattern": "*.png24"
+          },
+          {
+            "filenamePattern": "*.png32"
+          },
+          {
+            "filenamePattern": "*.png48"
+          },
+          {
+            "filenamePattern": "*.png64"
+          },
+          {
+            "filenamePattern": "*.png8"
+          },
+          {
+            "filenamePattern": "*.pnm"
+          },
+          {
+            "filenamePattern": "*.pocketmod"
+          },
+          {
+            "filenamePattern": "*.ppm"
+          },
+          {
+            "filenamePattern": "*.ps"
+          },
+          {
+            "filenamePattern": "*.ps2"
+          },
+          {
+            "filenamePattern": "*.ps3"
+          },
+          {
+            "filenamePattern": "*.psb"
+          },
+          {
+            "filenamePattern": "*.psd"
+          },
+          {
+            "filenamePattern": "*.ptif"
+          },
+          {
+            "filenamePattern": "*.pwp"
+          },
+          {
+            "filenamePattern": "*.r"
+          },
+          {
+            "filenamePattern": "*.radial-gradient"
+          },
+          {
+            "filenamePattern": "*.raf"
+          },
+          {
+            "filenamePattern": "*.ras"
+          },
+          {
+            "filenamePattern": "*.raw"
+          },
+          {
+            "filenamePattern": "*.rgb"
+          },
+          {
+            "filenamePattern": "*.rgb565"
+          },
+          {
+            "filenamePattern": "*.rgba"
+          },
+          {
+            "filenamePattern": "*.rgbo"
+          },
+          {
+            "filenamePattern": "*.rgf"
+          },
+          {
+            "filenamePattern": "*.rla"
+          },
+          {
+            "filenamePattern": "*.rle"
+          },
+          {
+            "filenamePattern": "*.rmf"
+          },
+          {
+            "filenamePattern": "*.rw2"
+          },
+          {
+            "filenamePattern": "*.scr"
+          },
+          {
+            "filenamePattern": "*.screenshot"
+          },
+          {
+            "filenamePattern": "*.sct"
+          },
+          {
+            "filenamePattern": "*.sfw"
+          },
+          {
+            "filenamePattern": "*.sgi"
+          },
+          {
+            "filenamePattern": "*.six"
+          },
+          {
+            "filenamePattern": "*.sixel"
+          },
+          {
+            "filenamePattern": "*.sr2"
+          },
+          {
+            "filenamePattern": "*.srf"
+          },
+          {
+            "filenamePattern": "*.stegano"
+          },
+          {
+            "filenamePattern": "*.sun"
+          },
+          {
+            "filenamePattern": "*.svg"
+          },
+          {
+            "filenamePattern": "*.svgz"
+          },
+          {
+            "filenamePattern": "*.text"
+          },
+          {
+            "filenamePattern": "*.tga"
+          },
+          {
+            "filenamePattern": "*.thumbnail"
+          },
+          {
+            "filenamePattern": "*.tiff"
+          },
+          {
+            "filenamePattern": "*.tiff64"
+          },
+          {
+            "filenamePattern": "*.tile"
+          },
+          {
+            "filenamePattern": "*.tim"
+          },
+          {
+            "filenamePattern": "*.tm2"
+          },
+          {
+            "filenamePattern": "*.ttc"
+          },
+          {
+            "filenamePattern": "*.ttf"
+          },
+          {
+            "filenamePattern": "*.txt"
+          },
+          {
+            "filenamePattern": "*.uyvy"
+          },
+          {
+            "filenamePattern": "*.vda"
+          },
+          {
+            "filenamePattern": "*.vicar"
+          },
+          {
+            "filenamePattern": "*.vid"
+          },
+          {
+            "filenamePattern": "*.viff"
+          },
+          {
+            "filenamePattern": "*.vips"
+          },
+          {
+            "filenamePattern": "*.vst"
+          },
+          {
+            "filenamePattern": "*.wbmp"
+          },
+          {
+            "filenamePattern": "*.webp"
+          },
+          {
+            "filenamePattern": "*.wmv"
+          },
+          {
+            "filenamePattern": "*.wpg"
+          },
+          {
+            "filenamePattern": "*.x3f"
+          },
+          {
+            "filenamePattern": "*.xbm"
+          },
+          {
+            "filenamePattern": "*.xc"
+          },
+          {
+            "filenamePattern": "*.xcf"
+          },
+          {
+            "filenamePattern": "*.xpm"
+          },
+          {
+            "filenamePattern": "*.xps"
+          },
+          {
+            "filenamePattern": "*.xv"
+          },
+          {
+            "filenamePattern": "*.y"
+          },
+          {
+            "filenamePattern": "*.ycbcr"
+          },
+          {
+            "filenamePattern": "*.ycbcra"
+          },
+          {
+            "filenamePattern": "*.yuv"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "magickImageReader.layerViewer",
+          "name": "Layers"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p  ./",
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "tsc -watch -p ./"
+  },
+  "dependencies": {
+    "@imagemagick/magick-wasm": "0.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.27",
+    "@types/vscode": "^1.48.0",
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
+    "eslint": "^7.7.0",
+    "typescript": "^3.9.7"
+  }
+}
