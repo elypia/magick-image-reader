@@ -1,7 +1,24 @@
+/*
+ * Copyright 2020-2020 Elypia CIC and Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 // @ts-check
 
 // This script is run within the webview itself
 (function () {
+
 	// @ts-ignore
 	const vscode = acquireVsCodeApi();
 
@@ -12,14 +29,17 @@
 	async function loadImageFromData(initialContent) {
 		const blob = new Blob([initialContent], { 'type': 'image/png' });
 		const url = URL.createObjectURL(blob);
+
 		try {
 			const img = document.createElement('img');
 			img.crossOrigin = 'anonymous';
 			img.src = url;
+
 			await new Promise((resolve, reject) => {
 				img.onload = resolve;
 				img.onerror = reject;
 			});
+
 			return img;
 		} finally {
 			URL.revokeObjectURL(url);
@@ -27,12 +47,19 @@
 	}
 
 	class MagickEditor {
-		constructor( /** @type {HTMLElement} */ parent) {
+
+		/** 
+		 * @param {HTMLElement} parent 
+		 */
+		constructor(parent) {
 			this.ready = false;
 			this._initElements(parent);
 		}
 
-		_initElements(/** @type {HTMLElement} */ parent) {
+		/** 
+		 * @param {HTMLElement} parent 
+		 */
+		_initElements(parent) {
 			this.wrapper = document.createElement('div');
 			this.wrapper.style.position = 'relative';
 			parent.append(this.wrapper);
@@ -50,7 +77,10 @@
 		}
 
 		_redraw() {
-			this.drawingCtx.clearRect(0, 0, this.drawingCanvas.width, this.drawingCanvas.height);
+			const width = this.drawingCanvas.width;
+			const height = this.drawingCanvas.height;
+
+			this.drawingCtx.clearRect(0, 0, width, height);
 		}
 
 		/**
@@ -74,10 +104,8 @@
 			this.initialCanvas.height = this.drawingCanvas.height = size;
 
 			this.initialCtx.save();
-			{
-				this.initialCtx.fillStyle = 'white';
-				this.initialCtx.fillRect(0, 0, size, size);
-			}
+			this.initialCtx.fillStyle = 'white';
+			this.initialCtx.fillRect(0, 0, size, size);
 			this.initialCtx.restore();
 
 			this.ready = true;
@@ -85,7 +113,9 @@
 			this._redraw();
 		}
 
-		/** @return {Promise<Uint8Array>} */
+		/** 
+		 * @return {Promise<Uint8Array>} 
+		 */
 		async getImageData() {
 			const outCanvas = document.createElement('canvas');
 			outCanvas.width = this.drawingCanvas.width;

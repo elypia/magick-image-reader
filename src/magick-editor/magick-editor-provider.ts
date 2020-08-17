@@ -1,10 +1,25 @@
+/*
+ * Copyright 2020-2020 Elypia CIC and Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import * as vscode from 'vscode';
 import { MagickEdit, MagickDocument } from './magick-document';
 import { disposeAll } from '../utils/disposable';
-import * as path from 'path';
 import { WebviewCollection } from '../utils/webview-collection';
-import { ImageMagick } from '@imagemagick/magick-wasm';
-import { getNonce } from '../utils/nonce';
+import { Interpolator } from '../utils/interpolator';
+import { Nonce } from '../utils/nonce';
 
 /**
  * The actual editor for ImageMagick types.
@@ -16,16 +31,22 @@ import { getNonce } from '../utils/nonce';
 export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider {
 
   /** Tracks all known webviews. */
-  private readonly webviews = new WebviewCollection();
+  private readonly webviews: WebviewCollection;
+
+  /** All callbacks that are pending from the view. */
+  private readonly callbacks: Map<number, (response: any) => void>;
 
   constructor(private readonly _context: vscode.ExtensionContext) {
     console.log('Initialized instance of MagickEditorProvider.');
+
+    this.webviews = new WebviewCollection();
+    this.callbacks = new Map<number, (response: any) => void>();
   }
 
   public async openCustomDocument(
     uri: vscode.Uri,
-    openContext: { backupId?: string },
-    _token: vscode.CancellationToken
+    openContext: vscode.CustomDocumentOpenContext,
+    cancellationToken: vscode.CancellationToken
   ): Promise<MagickDocument> {
     console.log('MagickEditor is preparing to open file at:', uri.toString());
 
@@ -38,6 +59,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
         const panel = webviewsForDocument[0];
         const response = await this.postMessageWithResponse<number[]>(panel, 'getFileData', {});
+        console.log('Recieved response with content:', response);
         return new Uint8Array(response);
       }
     });
@@ -65,24 +87,23 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
   async resolveCustomEditor(
     document: MagickDocument,
     webviewPanel: vscode.WebviewPanel,
-    _token: vscode.CancellationToken
+    cancellationToken: vscode.CancellationToken
   ): Promise<void> {
-    // Add the webview to our internal set of active webviews
     this.webviews.add(document.uri, webviewPanel);
 
-    // Setup initial content for the webview
     webviewPanel.webview.options = {
-      enableScripts: true,
+      enableScripts: true
     };
 
-    const templateHtml = this.getHtmlForWebview(webviewPanel.webview);
-    webviewPanel.webview.html = templateHtml.toString();
+    const html = await this.getHtmlForWebview(webviewPanel.webview);
+    webviewPanel.webview.html = html;
 
     console.log('Rendering HTML for document with URI:', document.toString());
 
-    webviewPanel.webview.onDidReceiveMessage(e => this.onMessage(document, e));
+    webviewPanel.webview.onDidReceiveMessage((event) => {
+      console.log(event);
+    });
 
-    // Wait for the webview to be properly ready before we init
     webviewPanel.webview.onDidReceiveMessage(e => {
       if (e.type === 'ready') {
         if (document.uri.scheme === 'untitled') {
@@ -117,39 +138,39 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     return document.backup(context.destination, cancellation);
   }
 
-  //#endregion
-
 	/**
 	 * Get the static HTML used for in our editor's webviews.
+   * 
+   * @param webview
+   * @returns The HTML content to represents the desired webview.
 	 */
-  private getHtmlForWebview(webview: vscode.Webview): string {
-    const scriptUri = webview.asWebviewUri(vscode.Uri.file(
-      path.join(this._context.extensionPath, 'media', 'main.js')
-    ));
+  private async getHtmlForWebview(webview: vscode.Webview): Promise<string> {
+    const wwwPath: vscode.Uri = vscode.Uri.joinPath(this._context.extensionUri, 'media', 'www');
+    const editorPath: vscode.Uri = vscode.Uri.joinPath(wwwPath, 'index.html');
+    const scriptPath: vscode.Uri = vscode.Uri.joinPath(wwwPath, 'main.js');
+    
+    const variables: Map<string, string> = new Map<string, string>()
+      .set('nonce', Nonce.generate())
+      .set('scriptPath', scriptPath.toString())
+      .set('cspSource', webview.cspSource);
 
-    const nonce = getNonce();
-    return `
-    	<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource} blob:; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Magick Image Reader</title>
-				<script nonce="${nonce}" src="${scriptUri}"></script>
-			</head>
-			<body>
-				<div class="drawing-canvas"></div>
-			</body>
-			</html>`;
+    const html = vscode.workspace.fs.readFile(editorPath)
+      .then((array: Uint8Array) => {
+        const interpolator: Interpolator = new Interpolator(variables);
+        const template = array.toString();
+        const html = interpolator.interpolate(template);
+
+        return html;
+      });
+
+    return html;
   }
 
   private _requestId = 1;
-  private readonly _callbacks = new Map<number, (response: any) => void>();
 
   private postMessageWithResponse<R = unknown>(panel: vscode.WebviewPanel, type: string, body: any): Promise<R> {
     const requestId = this._requestId++;
-    const p = new Promise<R>(resolve => this._callbacks.set(requestId, resolve));
+    const p = new Promise<R>(resolve => this.callbacks.set(requestId, resolve));
     panel.webview.postMessage({ type, requestId, body });
     return p;
   }
@@ -157,20 +178,4 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
   private postMessage(panel: vscode.WebviewPanel, type: string, body: any): void {
     panel.webview.postMessage({ type, body });
   }
-
-  private onMessage(document: MagickDocument, message: any) {
-    switch (message.type) {
-      case 'stroke':
-        document.makeEdit(message as MagickEdit);
-        return;
-
-      case 'response':
-        {
-          const callback = this._callbacks.get(message.requestId);
-          callback?.(message.body);
-          return;
-        }
-    }
-  }
-
 }
