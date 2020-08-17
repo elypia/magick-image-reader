@@ -21,13 +21,13 @@ want to use or derive work from this source code!
 
 [matrix-community]: https://matrix.to/#/+elypia:matrix.org "Matrix Invite"
 [discord-guild]: https://discord.com/invite/hprGMaM "Discord Invite"
-[gitlab]: https://gitlab.com/Elypia/magick-image-viewer/commits/master "Repository on GitLab"
+[gitlab]: https://gitlab.com/Elypia/magick-image-reader/commits/master "Repository on GitLab"
 [elypia-donate]: https://elypia.org/donate "Donate to Elypia"
 [Apache 2.0]: https://www.apache.org/licenses/LICENSE-2.0 "Apache 2.0 License"
 [TL;DR]: https://tldrlegal.com/license/apache-license-2.0-(apache-2.0) "TL;DR of Apache 2.0"
 
 [Matrix]: https://img.shields.io/matrix/elypia:matrix.org?logo=matrix "Matrix Shield"
 [Discord]: https://discord.com/api/guilds/184657525990359041/widget.png "Discord Shield"
-[Build]: https://gitlab.com/Elypia/magick-image-viewer/badges/master/pipeline.svg "GitLab Build Shield"
-[Coverage]: https://gitlab.com/Elypia/magick-image-viewer/badges/master/coverage.svg "GitLab Coverage Shield"
+[Build]: https://gitlab.com/Elypia/magick-image-reader/badges/master/pipeline.svg "GitLab Build Shield"
+[Coverage]: https://gitlab.com/Elypia/magick-image-reader/badges/master/coverage.svg "GitLab Coverage Shield"
 [Donate]: https://img.shields.io/badge/elypia-donate-blueviolet "Donate Shield"
