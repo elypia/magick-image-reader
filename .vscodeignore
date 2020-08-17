@@ -1,0 +1,9 @@
+.github/
+.vscode/
+src/
+.gitignore
+.gitlab-ci.yml
+.vscodeignore
+*.vsix
+NOTICE
+tsconfig.json
