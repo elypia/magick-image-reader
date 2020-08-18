@@ -4,14 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${cspSource} blob:; style-src ${cspSource}; script-src 'nonce-${nonce}';">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Magick Image Reader</title>
-  <script nonce="${nonce}" src="${scriptPath}"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="${stylePath}" rel="stylesheet" />
 </head>
 
 <body>
-  <h1>Magick Image Reader</h1>
-  <div class="drawing-canvas"></div>
+  <div id="magick-image" class="drawing-canvas"></div>
+
+  <!-- This must be loaded at the end. -->
+  <script nonce="${nonce}" src="${scriptPath}"></script>
 </body>
 
 </html>

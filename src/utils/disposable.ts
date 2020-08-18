@@ -16,12 +16,9 @@
 
 import * as vscode from 'vscode';
 
-export function disposeAll(disposables: vscode.Disposable[]): void {
-  for (let i = disposables.length; i >= 0; i--)
-    disposables[i].dispose();  
-}
-
 /**
+ * Abstracts the internal Visual Studio Code Disposable class.
+ * 
  * @since 1.0.0
  */
 export abstract class Disposable {
@@ -38,7 +35,7 @@ export abstract class Disposable {
 			return;
 
     this._isDisposed = true;
-		disposeAll(this.disposables);
+		Disposable.disposeAll(this.disposables);
 	}
 
 	protected register<T extends vscode.Disposable>(value: T): T {
@@ -48,5 +45,19 @@ export abstract class Disposable {
 
 	protected get isDisposed(): boolean {
 		return this._isDisposed;
+	}
+
+	/**
+	 * Pops all items out of the array and calls dispose on all of them.
+	 * 
+	 * @param disposables An array of disposable objects.
+	 */
+	public static disposeAll(disposables: vscode.Disposable[]): void {
+		while (disposables.length) {
+			const disposable = disposables.pop();
+
+			if (disposable)
+				disposable.dispose();
+		}
 	}
 }
