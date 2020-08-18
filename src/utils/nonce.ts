@@ -21,7 +21,7 @@
 export class Nonce {
 
 	/** The number of characters the nonce can be. */
-	private static readonly nonceLength: number = 32;
+	private static readonly nonceLength: number = 128;
 
 	/** The minimum ascii table from the ascii table to add. */
 	private static readonly minimum: number = 97;

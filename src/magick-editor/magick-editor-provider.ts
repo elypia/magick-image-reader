@@ -37,6 +37,12 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
   /** All callbacks that are pending from the view. */
   private readonly callbacks: Map<number, (response: any) => void>;
 
+  /** 
+   * After we request the static webview HTML the first time, we store the result
+   * so we don't have to query it again as this won't change within the same session.
+   */
+  private staticWebviewHtml: Thenable<string> | undefined;
+
   private request: number;
 
   constructor(private readonly _context: vscode.ExtensionContext) {
@@ -88,7 +94,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     return document;
   }
 
-  async resolveCustomEditor(
+  public async resolveCustomEditor(
     document: MagickDocument,
     webviewPanel: vscode.WebviewPanel,
     cancellationToken: vscode.CancellationToken
@@ -99,7 +105,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
       enableScripts: true
     };
 
-    webviewPanel.webview.html = await this.getHtmlForWebview(webviewPanel.webview);
+    webviewPanel.webview.html = await this.getWebviewHtml(webviewPanel.webview);
     console.log('Rendering HTML for document with URI:', document.toString());
 
     webviewPanel.webview.onDidReceiveMessage((event) => {
@@ -153,6 +159,9 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
   private onMessage(document: MagickDocument, message: any) {
 		switch (message.type) {
+      case 'log':
+				console.log(message.message);
+				break;
 			case 'stroke':
 				document.makeEdit(message as MagickEdit);
 				break;
@@ -171,27 +180,50 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
    * @param webview
    * @returns The HTML content to represents the desired webview.
 	 */
-  private async getHtmlForWebview(webview: vscode.Webview): Promise<string> {
+  private async getWebviewHtml(webview: vscode.Webview): Promise<string> {
     const wwwPath: vscode.Uri = vscode.Uri.joinPath(this._context.extensionUri, 'media', 'www');
-    const editorPath: vscode.Uri = vscode.Uri.joinPath(wwwPath, 'index.html');
     const scriptPath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'main.js'));
     const stylePath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'style.css'));
+
+    const staticHtmlTemplate: string = await this.getStaticWebviewHtml(webview, wwwPath);
 
     const variables: Map<string, string> = new Map<string, string>()
       .set('nonce', Nonce.generate())
       .set('scriptPath', scriptPath.toString())
-      .set('stylePath', stylePath.toString())
+      .set('stylePath', stylePath.toString());
+
+    const interpolator: Interpolator = new Interpolator(variables);
+    const html = interpolator.interpolate(staticHtmlTemplate);
+    return html;
+  }
+
+  /**
+   * To avoid performing certain operation multiple times, the static parts
+   * that can be collected here and only run once per session and in this method.
+   * The actual getWebviewHtml method contains the dynamic parts which may change
+   * the HTML content per function call.
+   * 
+   * @returns The webview HTML that statically remains the same
+   * between all webviews in the session.
+   */
+  private async getStaticWebviewHtml(webview: vscode.Webview, wwwPath: vscode.Uri): Promise<string> {
+    if (this.staticWebviewHtml)
+      return this.staticWebviewHtml;
+
+    const editorPath: vscode.Uri = vscode.Uri.joinPath(wwwPath, 'index.html');
+
+    const variables: Map<string, string> = new Map<string, string>()
       .set('cspSource', webview.cspSource);
 
-    const html = vscode.workspace.fs.readFile(editorPath)
+    const staticHtml = vscode.workspace.fs.readFile(editorPath)
       .then((array: Uint8Array) => {
         const interpolator: Interpolator = new Interpolator(variables);
         const template = array.toString();
-        const html = interpolator.interpolate(template);
+        const staticHtml = interpolator.interpolate(template);
 
-        return html;
+        return staticHtml;
       });
 
-    return html;
+    return this.staticWebviewHtml = staticHtml;
   }
 }
