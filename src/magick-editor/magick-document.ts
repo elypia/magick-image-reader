@@ -181,10 +181,6 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
     return new MagickDocument(uri, documentData, delegate);
   }
 
-  static read(array: number, func: (image: string) => void): void {
-    console.log('Read Normal');
-  }
-
   private static async readFile(uri: vscode.Uri): Promise<Uint8Array> {
     if (uri.scheme === 'untitled')
       throw new Error('Can\'t create new file with Image Magick Reader editor.');

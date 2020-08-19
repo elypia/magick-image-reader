@@ -162,9 +162,6 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
       case 'log':
 				console.log(message.message);
 				break;
-			case 'stroke':
-				document.makeEdit(message as MagickEdit);
-				break;
 			case 'response':
         const callback = this.callbacks.get(message.requestId);
         callback?.(message.body);

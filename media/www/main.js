@@ -37,7 +37,6 @@
       img.src = url;
 
       vscode.postMessage({ type: 'log', message: 'Creating promise to attach to img tag.' });
-      vscode.postMessage({ type: 'log', message: 'hello\n' + document.body.innerHTML });
       await new Promise((resolve, reject) => {
         img.onload = resolve;
         img.onerror = reject;
@@ -71,20 +70,6 @@
       this.initialCanvas = document.createElement('canvas');
       this.initialCtx = this.initialCanvas.getContext('2d');
       this.wrapper.append(this.initialCanvas);
-
-      this.drawingCanvas = document.createElement('canvas');
-      this.drawingCanvas.style.position = 'absolute';
-      this.drawingCanvas.style.top = '0';
-      this.drawingCanvas.style.left = '0';
-      this.drawingCtx = this.drawingCanvas.getContext('2d');
-      this.wrapper.append(this.drawingCanvas);
-    }
-
-    _redraw() {
-      const width = this.drawingCanvas.width;
-      const height = this.drawingCanvas.height;
-
-      this.drawingCtx.clearRect(0, 0, width, height);
     }
 
     /**
@@ -95,15 +80,13 @@
 
       if (data) {
         const img = await loadImageFromData(data);
-        this.initialCanvas.width = this.drawingCanvas.width = img.naturalWidth;
-        this.initialCanvas.height = this.drawingCanvas.height = img.naturalHeight;
+        this.initialCanvas.width = img.naturalWidth;
+        this.initialCanvas.height = img.naturalHeight;
         
         vscode.postMessage({ type: 'log', message: 'Drawing image to screen.' });
         this.initialCtx.drawImage(img, 0, 0);
         this.ready = true;
       }
-
-      this._redraw();
     }
 
     /** 
@@ -111,12 +94,9 @@
      */
     async getImageData() {
       const outCanvas = document.createElement('canvas');
-      outCanvas.width = this.drawingCanvas.width;
-      outCanvas.height = this.drawingCanvas.height;
 
       const outCtx = outCanvas.getContext('2d');
       outCtx.drawImage(this.initialCanvas, 0, 0);
-      outCtx.drawImage(this.drawingCanvas, 0, 0);
 
       const blob = await new Promise(resolve => {
         outCanvas.toBlob(resolve, 'image/png')
