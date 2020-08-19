@@ -1,4 +1,4 @@
-# Magick Image Reader [![Matrix]][matrix-community] [![Discord]][discord-guild] [![Build]][gitlab] [![Coverage]][gitlab] [![Donate]][elypia-donate]
+# Magick Image Reader [![Matrix]][matrix-community] [![Discord]][discord-guild] [![Marketplace]][vscode-market-link] [![Build]][gitlab] [![Coverage]][gitlab] [![Donate]][elypia-donate]
 **HEADS UP: This extension is in very early development and depends heavily on [Magick.WASM](https://github.com/dlemstra/Magick.WASM) which is also in very early development. While this extension is functional, it should not be considered stable yet.**
 
 ## About
@@ -70,6 +70,7 @@ want to use or derive work from this source code!
 
 [matrix-community]: https://matrix.to/#/+elypia:matrix.org "Matrix Invite"
 [discord-guild]: https://discord.com/invite/hprGMaM "Discord Invite"
+[vscode-market-link]: https://marketplace.visualstudio.com/items?itemName=elypia.magick-image-reader
 [gitlab]: https://gitlab.com/Elypia/magick-image-reader/commits/master "Repository on GitLab"
 [elypia-donate]: https://elypia.org/donate "Donate to Elypia"
 [Apache 2.0]: https://www.apache.org/licenses/LICENSE-2.0 "Apache 2.0 License"
@@ -77,6 +78,7 @@ want to use or derive work from this source code!
 
 [Matrix]: https://img.shields.io/matrix/elypia:matrix.org?logo=matrix "Matrix Shield"
 [Discord]: https://discord.com/api/guilds/184657525990359041/widget.png "Discord Shield"
+[Marketplace]: https://img.shields.io/visual-studio-marketplace/i/elypia.magick-image-reader?color=%23007ACC&logo=visual%20studio%20code "Visual Studio Code Marketplace"
 [Build]: https://gitlab.com/Elypia/magick-image-reader/badges/master/pipeline.svg "GitLab Build Shield"
 [Coverage]: https://gitlab.com/Elypia/magick-image-reader/badges/master/coverage.svg "GitLab Coverage Shield"
 [Donate]: https://img.shields.io/badge/elypia-donate-blueviolet "Donate Shield"
