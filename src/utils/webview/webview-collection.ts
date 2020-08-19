@@ -15,11 +15,7 @@
  */
 
 import * as vscode from 'vscode';
-
-export interface WebviewItem {
-	resource: string;
-	webviewPanel: vscode.WebviewPanel
-}
+import { WebviewItem } from './webview-item';
 
 /**
  * Used to track multiple Visual Studio Code webviews.

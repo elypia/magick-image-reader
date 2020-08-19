@@ -16,39 +16,7 @@
 
 // @ts-check
 
-// This script is run within the webview itself
 (function () {
-
-  // @ts-ignore
-  const vscode = acquireVsCodeApi();
-
-  /**
-   * @param {Uint8Array} initialContent 
-   * @return {Promise<HTMLImageElement>}
-   */
-  async function loadImageFromData(initialContent) {
-    const blob = new Blob([initialContent], { 'type': 'image/png' });
-    const url = URL.createObjectURL(blob);
-    console.log('Creating img tag with provided image data from URL:', url);
-
-    try {
-      const img = document.createElement('img');
-      img.crossOrigin = 'anonymous';
-      img.src = url;
-
-      console.log('Creating promise to attach to img tag.');
-
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-
-      console.log('Finished constructing img tag for webview.');
-      return img;
-    } finally {
-      URL.revokeObjectURL(url);
-    }
-  }
 
   class MagickEditor {
 
@@ -113,7 +81,34 @@
     }
   }
 
-  const editor = new MagickEditor(document.querySelector('.drawing-canvas'));
+  /**
+   * @param {Uint8Array} initialContent 
+   * @return {Promise<HTMLImageElement>}
+   */
+  async function loadImageFromData(initialContent) {
+    const blob = new Blob([initialContent], { 'type': 'image/png' });
+    const url = URL.createObjectURL(blob);
+
+    try {
+      const img = document.createElement('img');
+      img.crossOrigin = 'anonymous';
+      img.src = url;
+
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+
+      return img;
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  // @ts-ignore
+  const vscode = acquireVsCodeApi();
+
+  const editor = new MagickEditor(document.querySelector('#magick-image'));
 
   window.addEventListener('message', async (event) => {
     const { type, value, requestId } = event.data;

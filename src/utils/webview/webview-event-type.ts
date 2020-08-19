@@ -15,15 +15,12 @@
  */
 
  /**
+  * Contains all event types that can be sent from the webview to
+  * the extension.
+  * 
   * @since 1.0.0
   */
 export enum WebviewEventType {
-
-  /** When the extension is done intializing. */
-  Init = 'init',
-
-  /** When the extention has an update to send to the webview. */
-  Update = 'update',
 
   /** When the webview is ready. */
   Ready = 'ready',

@@ -16,13 +16,16 @@
 
 import * as vscode from 'vscode';
 import { MagickDocument } from './magick-document';
-import { WebviewCollection } from '../utils/webview-collection';
+import { WebviewCollection } from '../utils/webview/webview-collection';
 import { Interpolator } from '../utils/interpolator';
 import { Nonce } from '../utils/nonce';
 import { MagickEdit } from './magick-edit';
 import { Disposable } from '../utils/disposable';
-import { WebviewEvent } from './webview-event';
-import { WebviewEventType } from './webview-event-type';
+import { WebviewEventType } from '../utils/webview/webview-event-type';
+import { ExtensionEventType } from '../utils/webview/extension-event-type';
+import { ExtensionEvent } from '../utils/webview/extension-event';
+import { WebviewEvent } from '../utils/webview/webview-event';
+import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
 
 /**
  * The actual editor for ImageMagick types.
@@ -84,10 +87,16 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
     listeners.push(document.onDidChangeContent(e => {
       for (const webviewPanel of this.webviews.get(document.uri)) {
-        this.postMessage(webviewPanel, WebviewEventType.Update, {
-          edits: e.edits,
-          content: e.content,
-        });
+        const extensionEvent: ExtensionEvent = {
+          type: ExtensionEventType.Update,
+          value: {
+            edits: e.edits,
+            content: e.content
+          }
+        };
+        
+        MagickFormat.A
+        webviewPanel.webview.postMessage(extensionEvent);
       }
     }));
 
@@ -115,8 +124,12 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
       switch (type) {
         case WebviewEventType.Ready:
-          this.postMessage(webviewPanel, WebviewEventType.Init, document.documentData);
-
+          const extensionEvent: ExtensionEvent = {
+            type: ExtensionEventType.Init,
+            value: document.documentData
+          };
+          
+          webviewPanel.webview.postMessage(extensionEvent);
           break;
         case WebviewEventType.Response:
           const value: any = event.value;
@@ -153,20 +166,6 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     const p = new Promise<R>(resolve => this.callbacks.set(requestId, resolve));
     panel.webview.postMessage({ type, requestId, body });
     return p;
-  }
-
-  /**
-   * @param panel The panel to post the event to.
-   * @param type The type of event that is being sent.
-   * @param value The value to send to the webview.
-   */
-  private postMessage(panel: vscode.WebviewPanel, type: WebviewEventType, value?: any): void {
-    const event: WebviewEvent = {
-      type: type,
-      value: value
-    }
-
-    panel.webview.postMessage(event);
   }
 
   /**

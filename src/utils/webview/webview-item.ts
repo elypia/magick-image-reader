@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-/**
-* @since 1.0.0
-*/
-import { WebviewEventType } from "./webview-event-type";
+import * as vscode from 'vscode';
 
 /**
- * This extension uses a strict format when sending
- * or receiving events from the webview to the extension.
+ * @since 1.0.0
  */
-export interface WebviewEvent {
-
-  /** The type of event that's taken place. */
-  type: WebviewEventType;
-
-  /** 
-   * The value associated with the event. 
-   * This could be anything as it comes from the JavaScript portion
-   * of the code so it should be validated.
-   */
-  value?: unknown;
+export interface WebviewItem {
+	resource: string;
+	webviewPanel: vscode.WebviewPanel
 }
