@@ -1,9 +1,10 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.3",
   "name": "magick-image-reader",
   "displayName": "Magick Image Reader",
   "author": "Elypia",
   "publisher": "elypia",
+  "icon": "assets/magick-image-reader-logo.png",
   "homepage": "https://gitlab.com/Elypia/magick-image-reader#readme",
   "description": "Uses ImageMagick to add read-only views of over 100 image formats in Visual Studio Code.",
   "license": "Apache-2.0",
@@ -17,7 +18,6 @@
     "ora"
   ],
   "categories": [
-    "Other",
     "Visualization"
   ],
   "repository": {
@@ -29,7 +29,7 @@
   },
   "main": "./out/extension.js",
   "engines": {
-    "vscode": "^1.48.0"
+    "vscode": "^1.47.0"
   },
   "activationEvents": [
     "onCustomEditor:magickImageReader.readImage",
@@ -527,7 +527,7 @@
   "devDependencies": {
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.0.27",
-    "@types/vscode": "^1.48.0",
+    "@types/vscode": "^1.47.0",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
     "eslint": "^7.7.0",
