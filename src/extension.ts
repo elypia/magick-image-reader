@@ -19,26 +19,23 @@ import { initializeImageMagick } from '@imagemagick/magick-wasm';
 import { MagickEditorProvider } from './magick-editor/magick-editor-provider';
 import { LayerTreeProvider } from './layer-view/layer-tree-provider';
 
-let initialized = false;
-
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
   console.log('Magick Image Reader extension is now active.');
+  await initializeImageMagick();
 
-  if (!initialized) {
-    console.log('Initializing ImageMagick.')
-    await initializeImageMagick();
-    initialized = true;
-  }
-
-  const subscription = vscode.window.registerCustomEditorProvider(
-    'magickImageReader.readImage', 
-    new MagickEditorProvider(context), 
-    { supportsMultipleEditorsPerDocument: false }
-  );
-
-  context.subscriptions.push(subscription);
+  const readImageId = 'magickImageReader.readImage';
+  const editorProvider = new MagickEditorProvider(context);
+  const options = {
+    supportsMultipleEditorsPerDocument: false
+  };
   
-  vscode.window.registerTreeDataProvider('magickImageReader.layerViewer', new LayerTreeProvider(context));
+  const layerViewerId = 'magickImageReader.layerViewer';
+  const layerViewer = new LayerTreeProvider(context);
+
+  context.subscriptions.push(
+    vscode.window.registerCustomEditorProvider(readImageId, editorProvider, options), 
+    vscode.window.registerTreeDataProvider(layerViewerId, layerViewer)
+  );
 }
 
 export function deactivate() {

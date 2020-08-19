@@ -24,7 +24,6 @@
      * @param {HTMLElement} parent 
      */
     constructor(parent) {
-      this.ready = false;
       this._initElements(parent);
     }
 
@@ -48,15 +47,12 @@
       console.log('Call to reset was made.');
 
       if (data) {
-
         try {
           const img = await loadImageFromData(data);
           this.initialCanvas.width = img.naturalWidth;
           this.initialCanvas.height = img.naturalHeight;
           
-          console.log('Drawing image to screen.');
           this.initialCtx.drawImage(img, 0, 0);
-          this.ready = true;
         } catch (err) {
           console.error(err);
         }
@@ -73,7 +69,6 @@
       outCtx.drawImage(this.initialCanvas, 0, 0);
 
       const blob = await new Promise(resolve => {
-        console.log('Called toBlob in Promise.');
         outCanvas.toBlob(resolve, 'image/png')
       });
 

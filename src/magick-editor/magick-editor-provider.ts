@@ -95,7 +95,6 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
           }
         };
         
-        MagickFormat.A
         webviewPanel.webview.postMessage(extensionEvent);
       }
     }));
