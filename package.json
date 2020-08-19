@@ -12,7 +12,9 @@
     "imagemagick",
     "magick",
     "visual-studio-code",
-    "vsc"
+    "vsc",
+    "psd",
+    "ora"
   ],
   "categories": [
     "Other",
@@ -40,18 +42,6 @@
         "displayName": "Magick Image Reader",
         "selector": [
           {
-            "filenamePattern": "*.3fr"
-          },
-          {
-            "filenamePattern": "*.3g2"
-          },
-          {
-            "filenamePattern": "*.3gp"
-          },
-          {
-            "filenamePattern": "*.a"
-          },
-          {
             "filenamePattern": "*.aai"
           },
           {
@@ -68,18 +58,6 @@
           },
           {
             "filenamePattern": "*.avs"
-          },
-          {
-            "filenamePattern": "*.b"
-          },
-          {
-            "filenamePattern": "*.bgr"
-          },
-          {
-            "filenamePattern": "*.bgra"
-          },
-          {
-            "filenamePattern": "*.bgro"
           },
           {
             "filenamePattern": "*.bmp"
@@ -148,9 +126,6 @@
             "filenamePattern": "*.dds"
           },
           {
-            "filenamePattern": "*.dfont"
-          },
-          {
             "filenamePattern": "*.dng"
           },
           {
@@ -163,16 +138,7 @@
             "filenamePattern": "*.dxt5"
           },
           {
-            "filenamePattern": "*.epdf"
-          },
-          {
             "filenamePattern": "*.epi"
-          },
-          {
-            "filenamePattern": "*.epsf"
-          },
-          {
-            "filenamePattern": "*.epsi"
           },
           {
             "filenamePattern": "*.ept"
@@ -184,13 +150,7 @@
             "filenamePattern": "*.ept3"
           },
           {
-            "filenamePattern": "*.erf"
-          },
-          {
             "filenamePattern": "*.fax"
-          },
-          {
-            "filenamePattern": "*.file"
           },
           {
             "filenamePattern": "*.fits"
@@ -203,18 +163,6 @@
           },
           {
             "filenamePattern": "*.ftp"
-          },
-          {
-            "filenamePattern": "*.fts"
-          },
-          {
-            "filenamePattern": "*.g"
-          },
-          {
-            "filenamePattern": "*.g3"
-          },
-          {
-            "filenamePattern": "*.g4"
           },
           {
             "filenamePattern": "*.gif"
@@ -232,9 +180,6 @@
             "filenamePattern": "*.graya"
           },
           {
-            "filenamePattern": "*.group4"
-          },
-          {
             "filenamePattern": "*.hald"
           },
           {
@@ -247,25 +192,10 @@
             "filenamePattern": "*.hrz"
           },
           {
-            "filenamePattern": "*.htm"
-          },
-          {
-            "filenamePattern": "*.http"
-          },
-          {
-            "filenamePattern": "*.https"
-          },
-          {
             "filenamePattern": "*.icb"
           },
           {
-            "filenamePattern": "*.iiq"
-          },
-          {
             "filenamePattern": "*.inline"
-          },
-          {
-            "filenamePattern": "*.ipl"
           },
           {
             "filenamePattern": "*.j2c"
@@ -277,13 +207,7 @@
             "filenamePattern": "*.jng"
           },
           {
-            "filenamePattern": "*.jnx"
-          },
-          {
             "filenamePattern": "*.jp2"
-          },
-          {
-            "filenamePattern": "*.jpc"
           },
           {
             "filenamePattern": "*.jpe"
@@ -295,37 +219,13 @@
             "filenamePattern": "*.jpg"
           },
           {
-            "filenamePattern": "*.jpm"
-          },
-          {
-            "filenamePattern": "*.jps"
-          },
-          {
             "filenamePattern": "*.jpt"
-          },
-          {
-            "filenamePattern": "*.k"
-          },
-          {
-            "filenamePattern": "*.k25"
-          },
-          {
-            "filenamePattern": "*.kdc"
           },
           {
             "filenamePattern": "*.label"
           },
           {
-            "filenamePattern": "*.m"
-          },
-          {
             "filenamePattern": "*.m2v"
-          },
-          {
-            "filenamePattern": "*.m4v"
-          },
-          {
-            "filenamePattern": "*.mac"
           },
           {
             "filenamePattern": "*.map"
@@ -337,13 +237,7 @@
             "filenamePattern": "*.mat"
           },
           {
-            "filenamePattern": "*.mef"
-          },
-          {
             "filenamePattern": "*.miff"
-          },
-          {
-            "filenamePattern": "*.mkv"
           },
           {
             "filenamePattern": "*.mng"
@@ -370,9 +264,6 @@
             "filenamePattern": "*.msl"
           },
           {
-            "filenamePattern": "*.msvg"
-          },
-          {
             "filenamePattern": "*.mtv"
           },
           {
@@ -382,22 +273,13 @@
             "filenamePattern": "*.nef"
           },
           {
-            "filenamePattern": "*.nrw"
-          },
-          {
             "filenamePattern": "*.null"
-          },
-          {
-            "filenamePattern": "*.o"
           },
           {
             "filenamePattern": "*.orf"
           },
           {
             "filenamePattern": "*.otb"
-          },
-          {
-            "filenamePattern": "*.otf"
           },
           {
             "filenamePattern": "*.pal"
@@ -409,9 +291,6 @@
             "filenamePattern": "*.pango"
           },
           {
-            "filenamePattern": "*.pattern"
-          },
-          {
             "filenamePattern": "*.pbm"
           },
           {
@@ -421,16 +300,10 @@
             "filenamePattern": "*.pcds"
           },
           {
-            "filenamePattern": "*.pct"
-          },
-          {
             "filenamePattern": "*.pcx"
           },
           {
             "filenamePattern": "*.pdb"
-          },
-          {
-            "filenamePattern": "*.pdfa"
           },
           {
             "filenamePattern": "*.pef"
@@ -449,9 +322,6 @@
           },
           {
             "filenamePattern": "*.pgm"
-          },
-          {
-            "filenamePattern": "*.pgx"
           },
           {
             "filenamePattern": "*.picon"
@@ -496,15 +366,6 @@
             "filenamePattern": "*.ppm"
           },
           {
-            "filenamePattern": "*.ps"
-          },
-          {
-            "filenamePattern": "*.ps2"
-          },
-          {
-            "filenamePattern": "*.ps3"
-          },
-          {
             "filenamePattern": "*.psb"
           },
           {
@@ -515,9 +376,6 @@
           },
           {
             "filenamePattern": "*.pwp"
-          },
-          {
-            "filenamePattern": "*.r"
           },
           {
             "filenamePattern": "*.radial-gradient"
@@ -553,12 +411,6 @@
             "filenamePattern": "*.rle"
           },
           {
-            "filenamePattern": "*.rmf"
-          },
-          {
-            "filenamePattern": "*.rw2"
-          },
-          {
             "filenamePattern": "*.scr"
           },
           {
@@ -574,31 +426,10 @@
             "filenamePattern": "*.sgi"
           },
           {
-            "filenamePattern": "*.six"
-          },
-          {
-            "filenamePattern": "*.sixel"
-          },
-          {
-            "filenamePattern": "*.sr2"
-          },
-          {
-            "filenamePattern": "*.srf"
-          },
-          {
             "filenamePattern": "*.stegano"
           },
           {
             "filenamePattern": "*.sun"
-          },
-          {
-            "filenamePattern": "*.svgz"
-          },
-          {
-            "filenamePattern": "*.text"
-          },
-          {
-            "filenamePattern": "*.thumbnail"
           },
           {
             "filenamePattern": "*.tif"
@@ -616,19 +447,10 @@
             "filenamePattern": "*.tim"
           },
           {
-            "filenamePattern": "*.tm2"
-          },
-          {
-            "filenamePattern": "*.ttc"
-          },
-          {
             "filenamePattern": "*.ttf"
           },
           {
             "filenamePattern": "*.uyvy"
-          },
-          {
-            "filenamePattern": "*.vda"
           },
           {
             "filenamePattern": "*.vicar"
@@ -652,9 +474,6 @@
             "filenamePattern": "*.webp"
           },
           {
-            "filenamePattern": "*.wmv"
-          },
-          {
             "filenamePattern": "*.wpg"
           },
           {
@@ -670,13 +489,7 @@
             "filenamePattern": "*.xcf"
           },
           {
-            "filenamePattern": "*.xps"
-          },
-          {
             "filenamePattern": "*.xv"
-          },
-          {
-            "filenamePattern": "*.y"
           },
           {
             "filenamePattern": "*.ycbcr"
@@ -704,6 +517,7 @@
     "compile": "tsc -p  ./",
     "lint": "eslint . --ext .ts,.tsx",
     "watch": "tsc -watch -p ./",
+    "test": "node ./out/test/runTest.js",
     "package": "vsce package",
     "publish": "vsce publish"
   },
@@ -711,12 +525,15 @@
     "@imagemagick/magick-wasm": "0.0.3"
   },
   "devDependencies": {
+    "@types/mocha": "^8.0.3",
     "@types/node": "^14.0.27",
     "@types/vscode": "^1.48.0",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
     "eslint": "^7.7.0",
+    "mocha": "^8.1.1",
     "typescript": "^3.9.7",
-    "vsce": "^1.78.0"
+    "vsce": "^1.78.0",
+    "vscode-test": "^1.4.0"
   }
 }

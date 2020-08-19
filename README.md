@@ -27,7 +27,6 @@ formats that Visual Studio Code already supported natively:
 * PSD (Photoshop)
 * DCM
 * DDS
-* EPS
 * HDR
 * HEIC
 * MNG
