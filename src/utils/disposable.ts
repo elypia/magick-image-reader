@@ -19,7 +19,7 @@ import * as vscode from 'vscode';
 /**
  * Abstracts the internal Visual Studio Code Disposable class.
  * 
- * @since 1.0.0
+ * @since 0.1.0
  */
 export abstract class Disposable {
   

@@ -24,7 +24,7 @@ import {DocumentNode} from './document-node';
  * Each layer can be clicked to give view the image in that particular layer
  * or group.
  * 
- * @since 1.0.0
+ * @since 0.1.0
  */
 export class LayerTreeProvider implements vscode.TreeDataProvider<DocumentNode> {
 

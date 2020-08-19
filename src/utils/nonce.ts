@@ -40,7 +40,6 @@ export class Nonce {
 			result += String.fromCharCode(byte);
 		}
 	
-		console.log('Generated nonce of:', result);
 		return result;
 	}
 }

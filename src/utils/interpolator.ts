@@ -17,7 +17,7 @@
 /**
  * Interpolate a set of variables into {@link string}s
  * 
- * @since 1.0.0
+ * @since 0.1.0
  */
 export class Interpolator {
 
@@ -37,7 +37,6 @@ export class Interpolator {
     let result: string = body;
 
     this.variables.forEach((value: string, key: string) => {
-      console.log(`Replacing all instances of "${key}" with "${value}".`);
       const pattern: RegExp = new RegExp(`\\\${${key}}`, 'g');
       result = result.replace(pattern, value);
     });

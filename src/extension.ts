@@ -16,12 +16,19 @@
 
 import * as vscode from 'vscode';
 import { initializeImageMagick } from '@imagemagick/magick-wasm';
+import { Magick } from '@imagemagick/magick-wasm/magick'
+import { Quantum } from '@imagemagick/magick-wasm/quantum';
 import { MagickEditorProvider } from './magick-editor/magick-editor-provider';
 import { LayerTreeProvider } from './layer-view/layer-tree-provider';
 
-export async function activate(context: vscode.ExtensionContext): Promise<void> {
+export function activate(context: vscode.ExtensionContext): void {
   console.log('Magick Image Reader extension is now active.');
-  await initializeImageMagick();
+  
+  initializeImageMagick().then(async () => {
+    console.info('ImageMagick Version:', Magick.imageMagickVersion);
+    console.info('Delegates:', Magick.delegates);
+    console.info('Quantum Depth:', Quantum.depth);
+  });
 
   const readImageId = 'magickImageReader.readImage';
   const editorProvider = new MagickEditorProvider(context);
@@ -38,6 +45,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
   );
 }
 
-export function deactivate() {
+export function deactivate(): void {
   console.log('Magick Image Reader extension is now inactive.');
 }

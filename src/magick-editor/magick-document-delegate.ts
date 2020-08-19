@@ -18,7 +18,7 @@
  * Called by Visual Studio Code whenever a user saved the document
  * to a new location.
  * 
- * @since 1.0.0
+ * @since 0.1.0
  */
 export interface MagickDocumentDelegate {
   getFileData(): Promise<Uint8Array>;

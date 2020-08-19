@@ -32,7 +32,7 @@ import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
  * This is used by all images loaded via ImageMagick to display
  * a web friendly version of it.
  * 
- * @since 1.0.0
+ * @since 0.1.0
  */
 export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider {
 

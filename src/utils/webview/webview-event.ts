@@ -18,7 +18,7 @@ import { GenericEvent } from "./generic-event";
 import { WebviewEventType } from "./webview-event-type";
 
 /**
- * @since 1.0.0
+ * @since 0.1.0
  */
 export interface WebviewEvent extends GenericEvent<WebviewEventType> {
 

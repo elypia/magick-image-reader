@@ -23,7 +23,7 @@ import { MagickEdit } from './magick-edit';
 import { Disposable } from '../utils/disposable';
 
 /**
- * @since 1.0.0
+ * @since 0.1.0
  */
 export class MagickDocument extends Disposable implements vscode.CustomDocument {
 

@@ -18,7 +18,7 @@
  * This extension uses a strict format when sending
  * or receiving events from the webview to the extension.
  * 
- * @since 1.0.0
+ * @since 0.1.0
  */
 export interface GenericEvent<T> {
 

@@ -21,7 +21,7 @@ import * as vscode from 'vscode';
  * contextualized information to the Visual Studio Code UI depending
  * on the file format.
  * 
- * @since 1.0.0
+ * @since 0.1.0
  */
 export class DocumentNode extends vscode.TreeItem {
 

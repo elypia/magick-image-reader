@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "0.1.0",
   "name": "magick-image-reader",
   "displayName": "Magick Image Reader",
   "author": "Elypia",
@@ -8,10 +8,11 @@
   "description": "Uses ImageMagick to add read-only views of over 100 image formats in Visual Studio Code.",
   "license": "Apache-2.0",
   "keywords": [
-    "imagemagick",
     "elypia",
-    "vsc",
-    "visual-studio-code"
+    "imagemagick",
+    "magick",
+    "visual-studio-code",
+    "vsc"
   ],
   "categories": [
     "Other",
@@ -54,9 +55,6 @@
             "filenamePattern": "*.aai"
           },
           {
-            "filenamePattern": "*.ai"
-          },
-          {
             "filenamePattern": "*.art"
           },
           {
@@ -91,9 +89,6 @@
           },
           {
             "filenamePattern": "*.bmp3"
-          },
-          {
-            "filenamePattern": "*.c"
           },
           {
             "filenamePattern": "*.cal"
@@ -138,9 +133,6 @@
             "filenamePattern": "*.cut"
           },
           {
-            "filenamePattern": "*.data"
-          },
-          {
             "filenamePattern": "*.dcm"
           },
           {
@@ -175,9 +167,6 @@
           },
           {
             "filenamePattern": "*.epi"
-          },
-          {
-            "filenamePattern": "*.eps"
           },
           {
             "filenamePattern": "*.epsf"
@@ -261,9 +250,6 @@
             "filenamePattern": "*.htm"
           },
           {
-            "filenamePattern": "*.html"
-          },
-          {
             "filenamePattern": "*.http"
           },
           {
@@ -271,12 +257,6 @@
           },
           {
             "filenamePattern": "*.icb"
-          },
-          {
-            "filenamePattern": "*.ico"
-          },
-          {
-            "filenamePattern": "*.icon"
           },
           {
             "filenamePattern": "*.iiq"
@@ -375,9 +355,6 @@
             "filenamePattern": "*.mov"
           },
           {
-            "filenamePattern": "*.mp4"
-          },
-          {
             "filenamePattern": "*.mpc"
           },
           {
@@ -453,9 +430,6 @@
             "filenamePattern": "*.pdb"
           },
           {
-            "filenamePattern": "*.pdf"
-          },
-          {
             "filenamePattern": "*.pdfa"
           },
           {
@@ -484,9 +458,6 @@
           },
           {
             "filenamePattern": "*.pict"
-          },
-          {
-            "filenamePattern": "*.pix"
           },
           {
             "filenamePattern": "*.pjpeg"
@@ -621,19 +592,16 @@
             "filenamePattern": "*.sun"
           },
           {
-            "filenamePattern": "*.svg"
-          },
-          {
             "filenamePattern": "*.svgz"
           },
           {
             "filenamePattern": "*.text"
           },
           {
-            "filenamePattern": "*.tga"
+            "filenamePattern": "*.thumbnail"
           },
           {
-            "filenamePattern": "*.thumbnail"
+            "filenamePattern": "*.tif"
           },
           {
             "filenamePattern": "*.tiff"
@@ -655,9 +623,6 @@
           },
           {
             "filenamePattern": "*.ttf"
-          },
-          {
-            "filenamePattern": "*.txt"
           },
           {
             "filenamePattern": "*.uyvy"
@@ -703,9 +668,6 @@
           },
           {
             "filenamePattern": "*.xcf"
-          },
-          {
-            "filenamePattern": "*.xpm"
           },
           {
             "filenamePattern": "*.xps"

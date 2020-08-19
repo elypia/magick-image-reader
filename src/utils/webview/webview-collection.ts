@@ -20,7 +20,7 @@ import { WebviewItem } from './webview-item';
 /**
  * Used to track multiple Visual Studio Code webviews.
  * 
- * @since 1.0.0
+ * @since 0.1.0
  */
 export class WebviewCollection {
 
