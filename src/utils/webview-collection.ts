@@ -16,6 +16,11 @@
 
 import * as vscode from 'vscode';
 
+export interface WebviewItem {
+	resource: string;
+	webviewPanel: vscode.WebviewPanel
+}
+
 /**
  * Used to track multiple Visual Studio Code webviews.
  * 
@@ -23,17 +28,14 @@ import * as vscode from 'vscode';
  */
 export class WebviewCollection {
 
-	private readonly _webviews = new Set<{
-		readonly resource: string;
-		readonly webviewPanel: vscode.WebviewPanel;
-	}>();
+	private readonly webviews = new Set<WebviewItem>();
 
 	/**
 	 * Get all known webviews for a given uri.
 	 */
 	public *get(uri: vscode.Uri): Iterable<vscode.WebviewPanel> {
 		const key = uri.toString();
-		for (const entry of this._webviews) {
+		for (const entry of this.webviews) {
 			if (entry.resource === key) {
 				yield entry.webviewPanel;
 			}
@@ -44,11 +46,15 @@ export class WebviewCollection {
 	 * Add a new webview to the collection.
 	 */
 	public add(uri: vscode.Uri, webviewPanel: vscode.WebviewPanel) {
-		const entry = { resource: uri.toString(), webviewPanel };
-		this._webviews.add(entry);
+		const entry: WebviewItem = { 
+			resource: uri.toString(), 
+			webviewPanel: webviewPanel
+		};
+		
+		this.webviews.add(entry);
 
 		webviewPanel.onDidDispose(() => {
-			this._webviews.delete(entry);
+			this.webviews.delete(entry);
 		});
 	}
 }

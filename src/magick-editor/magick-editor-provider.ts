@@ -21,6 +21,8 @@ import { Interpolator } from '../utils/interpolator';
 import { Nonce } from '../utils/nonce';
 import { MagickEdit } from './magick-edit';
 import { Disposable } from '../utils/disposable';
+import { WebviewEvent } from './webview-event';
+import { WebviewEventType } from './webview-event-type';
 
 /**
  * The actual editor for ImageMagick types.
@@ -108,21 +110,25 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     webviewPanel.webview.html = await this.getWebviewHtml(webviewPanel.webview);
     console.log('Rendering HTML for document with URI:', document.toString());
 
-    webviewPanel.webview.onDidReceiveMessage((event) => {
+    webviewPanel.webview.onDidReceiveMessage((event: WebviewEvent) => {
       this.onMessage(document, event);
     });
 
-    webviewPanel.webview.onDidReceiveMessage(e => {
-      if (e.type === 'ready') {
-        if (document.uri.scheme === 'untitled') {
-          this.postMessage(webviewPanel, 'init', {
-            untitled: true
-          });
-        } else {
+    webviewPanel.webview.onDidReceiveMessage((event: WebviewEvent) => {
+      const type: WebviewEventType = event.type;      
+
+      if (type === WebviewEventType.Log)
+        return; // Do nothing, as this is a bit spammy.
+
+      switch (type) {
+        case WebviewEventType.Ready:
           this.postMessage(webviewPanel, 'init', {
             value: document.documentData
           });
-        }
+
+          break;
+        default:
+          throw new Error('Received unknown event from webview.');
       }
     });
   }
@@ -157,14 +163,18 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     panel.webview.postMessage({ type, body });
   }
 
-  private onMessage(document: MagickDocument, message: any) {
-		switch (message.type) {
-      case 'log':
-				console.log(message.message);
-				break;
-			case 'response':
-        const callback = this.callbacks.get(message.requestId);
-        callback?.(message.body);
+  private onMessage(document: MagickDocument, event: WebviewEvent) {
+		switch (event.type) {
+      case WebviewEventType.Log:
+				console.log(event.value);
+        break;
+      case WebviewEventType.Warn:
+        console.warn(event.value);
+        break;
+			case WebviewEventType.Response:
+        const value: any = event.value;
+        const callback = this.callbacks.get(value.requestId);
+        callback?.(value.body);
         break;
       default:
         throw new Error('Unhandled response type returned.');
