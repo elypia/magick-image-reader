@@ -19,11 +19,11 @@
   */
 export enum WebviewEventType {
 
-  /** When the webview is logging something to Visual Studio Code. */
-  Log = 'log',
+  /** When the extension is done intializing. */
+  Init = 'init',
 
-  /** When the webview logs a warning for Visual Studio Code. */
-  Warn = 'warn',
+  /** When the extention has an update to send to the webview. */
+  Update = 'update',
 
   /** When the webview is ready. */
   Ready = 'ready',

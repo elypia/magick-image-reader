@@ -84,7 +84,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
     listeners.push(document.onDidChangeContent(e => {
       for (const webviewPanel of this.webviews.get(document.uri)) {
-        this.postMessage(webviewPanel, 'update', {
+        this.postMessage(webviewPanel, WebviewEventType.Update, {
           edits: e.edits,
           content: e.content,
         });
@@ -111,24 +111,20 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     console.log('Rendering HTML for document with URI:', document.toString());
 
     webviewPanel.webview.onDidReceiveMessage((event: WebviewEvent) => {
-      this.onMessage(document, event);
-    });
-
-    webviewPanel.webview.onDidReceiveMessage((event: WebviewEvent) => {
       const type: WebviewEventType = event.type;      
-
-      if (type === WebviewEventType.Log)
-        return; // Do nothing, as this is a bit spammy.
 
       switch (type) {
         case WebviewEventType.Ready:
-          this.postMessage(webviewPanel, 'init', {
-            value: document.documentData
-          });
+          this.postMessage(webviewPanel, WebviewEventType.Init, document.documentData);
 
           break;
+        case WebviewEventType.Response:
+          const value: any = event.value;
+          const callback = this.callbacks.get(value.requestId);
+          callback?.(value.body);
+          break;
         default:
-          throw new Error('Received unknown event from webview.');
+          throw new Error('Received unknown event from webview: ' + event.type);
       }
     });
   }
@@ -159,27 +155,19 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     return p;
   }
 
-  private postMessage(panel: vscode.WebviewPanel, type: string, body: any): void {
-    panel.webview.postMessage({ type, body });
-  }
+  /**
+   * @param panel The panel to post the event to.
+   * @param type The type of event that is being sent.
+   * @param value The value to send to the webview.
+   */
+  private postMessage(panel: vscode.WebviewPanel, type: WebviewEventType, value?: any): void {
+    const event: WebviewEvent = {
+      type: type,
+      value: value
+    }
 
-  private onMessage(document: MagickDocument, event: WebviewEvent) {
-		switch (event.type) {
-      case WebviewEventType.Log:
-				console.log(event.value);
-        break;
-      case WebviewEventType.Warn:
-        console.warn(event.value);
-        break;
-			case WebviewEventType.Response:
-        const value: any = event.value;
-        const callback = this.callbacks.get(value.requestId);
-        callback?.(value.body);
-        break;
-      default:
-        throw new Error('Unhandled response type returned.');
-		}
-	}
+    panel.webview.postMessage(event);
+  }
 
   /**
 	 * Get the static HTML used for in our editor's webviews.

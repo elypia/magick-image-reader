@@ -201,7 +201,7 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
           
           image.write((bytesToWrite) => {
             console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
-            convertedBytes = bytesToWrite;
+            convertedBytes = new Buffer(bytesToWrite);
           }, MagickFormat.Png);
         });
         

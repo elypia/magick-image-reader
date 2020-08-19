@@ -29,22 +29,21 @@
   async function loadImageFromData(initialContent) {
     const blob = new Blob([initialContent], { 'type': 'image/png' });
     const url = URL.createObjectURL(blob);
-    vscode.postMessage({ type: 'log', value: 'Creating img tag with provided image data from URL: ' + url });
+    console.log('Creating img tag with provided image data from URL:', url);
 
     try {
       const img = document.createElement('img');
       img.crossOrigin = 'anonymous';
       img.src = url;
 
-      vscode.postMessage({ type: 'log', value: 'Creating promise to attach to img tag.' });
+      console.log('Creating promise to attach to img tag.');
+
       await new Promise((resolve, reject) => {
-        vscode.postMessage({ type: 'log', value: 'Inside the promise to attach to img tag.' });
         img.onload = resolve;
         img.onerror = reject;
-        vscode.postMessage({ type: 'log', value: 'End of the promise to attach to img tag.' });
       });
 
-      vscode.postMessage({ type: 'log', value: 'Finished constructing img tag for webview.' });
+      console.log('Finished constructing img tag for webview.');
       return img;
     } finally {
       URL.revokeObjectURL(url);
@@ -78,16 +77,21 @@
      * @param {Uint8Array | undefined} data 
      */
     async reset(data) {
-      vscode.postMessage({ type: 'log', value: 'Call to reset was made.' });
+      console.log('Call to reset was made.');
 
       if (data) {
-        const img = await loadImageFromData(data);
-        this.initialCanvas.width = img.naturalWidth;
-        this.initialCanvas.height = img.naturalHeight;
-        
-        vscode.postMessage({ type: 'log', value: 'Drawing image to screen.' });
-        this.initialCtx.drawImage(img, 0, 0);
-        this.ready = true;
+
+        try {
+          const img = await loadImageFromData(data);
+          this.initialCanvas.width = img.naturalWidth;
+          this.initialCanvas.height = img.naturalHeight;
+          
+          console.log('Drawing image to screen.');
+          this.initialCtx.drawImage(img, 0, 0);
+          this.ready = true;
+        } catch (err) {
+          console.error(err);
+        }
       }
     }
 
@@ -101,7 +105,7 @@
       outCtx.drawImage(this.initialCanvas, 0, 0);
 
       const blob = await new Promise(resolve => {
-        vscode.postMessage({ type: 'log', value: 'Called toBlob in Promise.' });
+        console.log('Called toBlob in Promise.');
         outCanvas.toBlob(resolve, 'image/png')
       });
 
@@ -112,15 +116,15 @@
   const editor = new MagickEditor(document.querySelector('.drawing-canvas'));
 
   window.addEventListener('message', async (event) => {
-    const { type, body, requestId } = event.data;
+    const { type, value, requestId } = event.data;
 
     switch (type) {
       case 'init':
-        vscode.postMessage({ type: 'log', value: 'Loading initial data into canvas.' });
-        await editor.reset(new Uint8Array(body.value.data));
+        console.log('Loading initial data into canvas.');
+        await editor.reset(new Uint8Array(value.data));
         break;
       case 'update':
-        const data = body.content ? new Uint8Array(body.content.data) : undefined;
+        const data = value.content ? new Uint8Array(value.content.data) : undefined;
         break;
       case 'getFileData':
         editor.getImageData().then(data => {
@@ -128,7 +132,7 @@
         });
         break;
       default:
-        vscode.postMessage({ type: 'warn', value: 'Unknown event type received.' });
+        console.warn('Unknown event type received.');
     }
   });
 
