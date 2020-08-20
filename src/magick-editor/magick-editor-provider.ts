@@ -70,7 +70,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
         const webviewsForDocument = Array.from(this.webviews.get(document.uri));
 
         if (!webviewsForDocument.length)
-          throw new Error('Could not find webview to save for.');
+          throw new Error('Could not find webview to save for');
 
         const panel = webviewsForDocument[0];
         const response = await this.postMessageWithResponse<number[]>(panel, 'getFileData', {});
@@ -123,6 +123,8 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
       switch (type) {
         case WebviewEventType.Ready:
+          console.log('Ready event received from webview.');
+
           const extensionEvent: ExtensionEvent = {
             type: ExtensionEventType.Init,
             value: document.documentData

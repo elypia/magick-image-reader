@@ -23,8 +23,8 @@ import { LayerTreeProvider } from './layer-view/layer-tree-provider';
 
 export function activate(context: vscode.ExtensionContext): void {
   console.log('Magick Image Reader extension is now active.');
-  
-  initializeImageMagick().then(async () => {
+
+  initializeImageMagick().then(() => {
     console.info('ImageMagick Version:', Magick.imageMagickVersion);
     console.info('Delegates:', Magick.delegates);
     console.info('Quantum Depth:', Quantum.depth);

@@ -103,7 +103,8 @@
   // @ts-ignore
   const vscode = acquireVsCodeApi();
 
-  const editor = new MagickEditor(document.querySelector('#magick-image'));
+  const canvasElement = document.getElementById('magick-image');
+  const editor = new MagickEditor(canvasElement);
 
   window.addEventListener('message', async (event) => {
     const { type, value, requestId } = event.data;

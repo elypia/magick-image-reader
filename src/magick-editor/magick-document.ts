@@ -21,6 +21,8 @@ import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
 import { MagickDocumentDelegate } from './magick-document-delegate';
 import { MagickEdit } from './magick-edit';
 import { Disposable } from '../utils/disposable';
+import { MagickFormatInfo } from '@imagemagick/magick-wasm/magick-format-info';
+import { FormatUtils } from '../utils/imagemagick/format-utils';
 
 /**
  * @since 0.1.0
@@ -183,22 +185,32 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
 
   private static async readFile(uri: vscode.Uri): Promise<Uint8Array> {
     if (uri.scheme === 'untitled')
-      throw new Error('Can\'t create new file with Image Magick Reader editor.');
+      throw new Error('Can\'t create new file with Image Magick Reader editor');
 
-    return vscode.workspace.fs.readFile(uri).then(async (fileData: Uint8Array) => {
+    return vscode.workspace.fs.readFile(uri).then((fileData: Uint8Array) => {
       console.log('Loaded document of length:', fileData.length);
-
-      if (uri.path.toLowerCase().endsWith('.png')) {
-        console.log('Image was a PNG already, so returning it as is.');
-        return fileData;
-      }
-
       let convertedBytes: Uint8Array | undefined = undefined;
+      const fileFormat = FormatUtils.getFormat(uri.path);
+      const magickFileFormat = (fileFormat) ? FormatUtils.getFormatInfo(fileFormat) : undefined;
+
+      if (magickFileFormat && !magickFileFormat.isReadable)
+        throw new Error(`Unable to read ${magickFileFormat.format} files, please notify the developer`);
 
       try {
         ImageMagick.read(fileData, (image: MagickImage) => {
           console.debug('Succesfully read document:', image.toString());
-          
+
+          if (fileFormat) {
+            const imageFormat: string = image.format;
+            const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
+
+            if (!magickFileFormat)
+              vscode.window.showWarningMessage(`File has no extension, but binary data represents ${magickImageFormat.format}.`);
+
+            else if (magickFileFormat.format !== magickImageFormat.format)
+              vscode.window.showWarningMessage(`File extension was ${magickFileFormat.format}, but binary data represents ${magickImageFormat.format}.`);
+          }
+
           image.write((bytesToWrite) => {
             console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
             convertedBytes = Buffer.from(bytesToWrite);
@@ -206,12 +218,12 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
         });
         
         if (!convertedBytes)
-          throw new Error('Unable to convert document to viewable format.');
+          throw new Error('Unable to convert document to viewable format');
 
         return convertedBytes;
       } catch (err) {
         console.error('Failed to load document or convert to a viewable format.\n', err);
-        throw new Error('Unable to read document with ImageMagick.');
+        throw err;
       }
     });
   }
