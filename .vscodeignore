@@ -1,6 +1,7 @@
 .github/
 .vscode/
 src/
+test-assets/
 .gitignore
 .gitlab-ci.yml
 .vscodeignore
