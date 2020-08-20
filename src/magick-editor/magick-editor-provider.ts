@@ -19,13 +19,11 @@ import { MagickDocument } from './magick-document';
 import { WebviewCollection } from '../utils/webview/webview-collection';
 import { Interpolator } from '../utils/interpolator';
 import { Nonce } from '../utils/nonce';
-import { MagickEdit } from './magick-edit';
 import { Disposable } from '../utils/disposable';
 import { WebviewEventType } from '../utils/webview/webview-event-type';
 import { ExtensionEventType } from '../utils/webview/extension-event-type';
 import { ExtensionEvent } from '../utils/webview/extension-event';
 import { WebviewEvent } from '../utils/webview/webview-event';
-import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
 import { MagickDocumentProducer } from './magick-document-producer';
 
 /**
@@ -179,7 +177,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
   private async getWebviewHtml(webview: vscode.Webview): Promise<string> {
     const wwwPath: vscode.Uri = vscode.Uri.joinPath(this._context.extensionUri, 'media', 'www');
     const scriptPath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'main.js'));
-    const stylePath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'style.css'));
+    const stylePath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'main.css'));
 
     const staticHtmlTemplate: string = await this.getStaticWebviewHtml(webview, wwwPath);
 

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { DocumentNode } from "../layer-view/document-node";
+import { MagickImage } from '@imagemagick/magick-wasm/magick-image';
 
 /**
  * Stores the context for a MagickDocument.
@@ -10,7 +10,11 @@ import { DocumentNode } from "../layer-view/document-node";
  */
 export class MagickDocumentContext {
 
+  /** The Visual Studio Code URI of the resource. */
   public documentUri: vscode.Uri;
+
+  /** The ImageMagick view of the document. */
+  public magickImage: MagickImage;
 
   /** The raw data that represents the document. */
   public documentData: Uint8Array;
@@ -23,11 +27,13 @@ export class MagickDocumentContext {
 
   public constructor(
     documentUri: vscode.Uri, 
+    magickImage: MagickImage,
     documentData: Uint8Array, 
     height: number, 
     width: number
   ) {
     this.documentUri = documentUri;
+    this.magickImage = magickImage;
     this.documentData = documentData;
     this.height = height;
     this.width = width;

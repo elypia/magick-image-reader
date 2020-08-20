@@ -15,6 +15,7 @@
  */
 
 // @ts-check
+"use strict";
 
 (function () {
 
@@ -24,13 +25,6 @@
      * @param {HTMLElement} parent 
      */
     constructor(parent) {
-      this._initElements(parent);
-    }
-
-    /** 
-     * @param {HTMLElement} parent 
-     */
-    _initElements(parent) {
       this.wrapper = document.createElement('div');
       this.wrapper.style.position = 'relative';
       parent.append(this.wrapper);
@@ -50,23 +44,8 @@
       this.initialCanvas.width = img.width;
       this.initialCanvas.height = img.height;
 
+      console.log(JSON.stringify(img));
       this.initialCtx.drawImage(img, 0, 0);
-    }
-
-    /** 
-     * @return {Promise<Uint8Array>} 
-     */
-    async getImageData() {
-      const outCanvas = document.createElement('canvas');
-
-      const outCtx = outCanvas.getContext('2d');
-      outCtx.drawImage(this.initialCanvas, 0, 0);
-
-      const blob = await new Promise(resolve => {
-        outCanvas.toBlob(resolve, 'image/png')
-      });
-
-      return new Uint8Array(await blob.arrayBuffer());
     }
   }
 
@@ -95,6 +74,16 @@
     }
   }
 
+  /**
+	 * @param {number} value The value to round.
+	 * @param {number} min
+	 * @param {number} max
+	 * @return {number}
+	 */
+	function round(value, min, max) {
+		return Math.min(Math.max(value, min), max);
+	}
+
   // @ts-ignore
   const vscode = acquireVsCodeApi();
 
@@ -108,16 +97,18 @@
   
   const editor = new MagickEditor(canvasElement);
 
-  window.addEventListener('message', async (event) => {
+  window.addEventListener('message', (event) => {
     const { type, value, requestId } = event.data;
 
     canvasElement.style.height = value.height;
     canvasElement.style.width = value.width;
 
+    console.log(JSON.stringify(value));
+
     switch (type) {
       case 'init':
         console.log('Loading initial data into canvas.');
-        await editor.reset(value);
+        editor.reset(value);
 
         for (const initiallyHiddenElement of initiallyHiddenElements)
           initiallyHiddenElement.classList.remove(hideInitiallyClass);
@@ -125,11 +116,6 @@
         break;
       case 'update':
         const data = value.content ? new Uint8Array(value.content.data) : undefined;
-        break;
-      case 'getFileData':
-        editor.getImageData().then(data => {
-          vscode.postMessage({ type: 'response', value: {requestId, body: Array.from(data)} });
-        });
         break;
       default:
         console.warn('Unknown event type received.');

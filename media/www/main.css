@@ -1,0 +1,60 @@
+/*
+ * Copyright 2020-2020 Elypia CIC and Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* Give everything a margin and padding of 0. */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Make our DOM the entire webview. */
+html, body {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Create checkered background on. */
+#magick-image {
+  position: absolute;
+  background-image: linear-gradient(to right, #18181880, #18181880),
+                    linear-gradient(to right, #0c0c0c 50%, #181818 50%),
+                    linear-gradient(to bottom, #0c0c0c 50%, #181818 50%);
+  background-blend-mode: normal, difference, normal;
+  background-size: 14px 14px;
+}
+
+/* Allow users to grab and drag the body. */
+.grabbable {
+  cursor: grab;
+}
+
+/* While users are in the process of grabbing the body. */
+.grabbing:active {
+  cursor: grabbing;
+}
+
+/** Hide these elements, they can be unhidden through JavaScript. */
+.hide-initially {
+  display: none;
+}
+
+/** Custom loading animation just for the canvas.*/
+#magick-image.hide-initially {
+
+}

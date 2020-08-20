@@ -19,12 +19,11 @@ import { ImageMagick } from '@imagemagick/magick-wasm';
 import { MagickImage } from '@imagemagick/magick-wasm/magick-image';
 import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
 import { MagickDocumentDelegate } from './magick-document-delegate';
-import { MagickEdit } from './magick-edit';
-import { Disposable } from '../utils/disposable';
 import { MagickFormatInfo } from '@imagemagick/magick-wasm/magick-format-info';
 import { FormatUtils } from '../utils/imagemagick/format-utils';
 import { MagickDocument } from './magick-document';
 import { MagickDocumentContext } from './magick-document-context';
+import { format } from 'path';
 
 /**
  * @since 0.2.0
@@ -79,7 +78,7 @@ export class MagickDocumentProducer {
             console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
             const convertedBytes = Buffer.from(bytesToWrite);
 
-            documentContext = new MagickDocumentContext(uri, convertedBytes, image.height, image.width);
+            documentContext = new MagickDocumentContext(uri, image, convertedBytes, image.height, image.width);
           }, MagickFormat.Png);
         });
       } catch (err) {

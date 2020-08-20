@@ -54,7 +54,7 @@ or execute a command to convert the image to another format.
 -->
 
 <!--
-### Basic Graphics Manipulation
+### Basic Graphics Manipulation [Not Implemented]
 This extension **by no means** is intended to be a replacement for a real
 graphics design tool such as GIMP, however basic support is provided for resizing
 and transforming images, or selections of images.

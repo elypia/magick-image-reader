@@ -10,6 +10,7 @@ Assets used for testing:
 | Name     | Attribution                                                                     |
 |----------|---------------------------------------------------------------------------------|
 | pandaAww | [Elypia Emotes] by [Elypia CIC and Contributors] is licensed under [CC BY 4.0]. |
+| matrix   | [Digital Rain Animation] by [Jahobr] is marked with [CC0 1.0].                  |
 
 ## Formats
 Regarding image file formats, this may include many double ups of the same format
@@ -23,4 +24,7 @@ and continues to work.
 
 [Elypia Emotes]: https://gitlab.com/Elypia/elypia-emotes
 [Elypia CIC and Contributors]: https://gitlab.com/Elypia/elypia-emotes/-/graphs/master
+[Digital Rain Animation]: https://commons.wikimedia.org/w/index.php?curid=63377057
+[Jahobr]: https://commons.wikimedia.org/wiki/User:Jahobr
 [CC BY 4.0]: https://creativecommons.org/licenses/by/4.0/
+[CC0 1.0]: https://creativecommons.org/publicdomain/zero/1.0/
