@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { MagickImage } from '@imagemagick/magick-wasm/magick-image';
+import { MimeType } from '../utils/imagemagick/mime-type';
 
 /**
  * Stores the context for a MagickDocument.
@@ -10,14 +11,17 @@ import { MagickImage } from '@imagemagick/magick-wasm/magick-image';
  */
 export class MagickDocumentContext {
 
-  /** The Visual Studio Code URI of the resource. */
+  /** The Visual Studio Code URI of the original resource. */
   public documentUri: vscode.Uri;
 
-  /** The ImageMagick view of the document. */
+  /** The ImageMagick view of the original document. */
   public magickImage: MagickImage;
 
-  /** The raw data that represents the document. */
+  /** The raw data that represents the viewable document. */
   public documentData: Uint8Array;
+
+  /** The MIME type of the data, this may not be the same as the original document. */
+  public mimeType: MimeType;
 
   /** The height of the document. */
   public height: number;
@@ -28,13 +32,15 @@ export class MagickDocumentContext {
   public constructor(
     documentUri: vscode.Uri, 
     magickImage: MagickImage,
-    documentData: Uint8Array, 
+    documentData: Uint8Array,
+    mimeType: MimeType, 
     height: number, 
     width: number
   ) {
     this.documentUri = documentUri;
     this.magickImage = magickImage;
     this.documentData = documentData;
+    this.mimeType = mimeType;
     this.height = height;
     this.width = width;
   }

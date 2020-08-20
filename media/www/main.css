@@ -29,9 +29,12 @@ html, body {
   align-items: center;
 }
 
+#magick-image-wrapper {
+  position: absolute;
+}
+
 /* Create checkered background on. */
 #magick-image {
-  position: absolute;
   background-image: linear-gradient(to right, #18181880, #18181880),
                     linear-gradient(to right, #0c0c0c 50%, #181818 50%),
                     linear-gradient(to bottom, #0c0c0c 50%, #181818 50%);
@@ -50,11 +53,6 @@ html, body {
 }
 
 /** Hide these elements, they can be unhidden through JavaScript. */
-.hide-initially {
+.hidden {
   display: none;
-}
-
-/** Custom loading animation just for the canvas.*/
-#magick-image.hide-initially {
-
 }

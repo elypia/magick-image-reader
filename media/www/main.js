@@ -39,12 +39,10 @@
      */
     async reset(documentContext) {
       const documentData = new Uint8Array(documentContext.documentData.data);
-
       const img = await loadImageFromData(documentContext, documentData);
+
       this.initialCanvas.width = img.width;
       this.initialCanvas.height = img.height;
-
-      console.log(JSON.stringify(img));
       this.initialCtx.drawImage(img, 0, 0);
     }
   }
@@ -55,7 +53,7 @@
    * @return {Promise<HTMLImageElement>}
    */
   async function loadImageFromData(documentContext, documentData) {
-    const blob = new Blob([documentData], { 'type': 'image/png' });
+    const blob = new Blob([documentData], { 'type': documentContext.mimeType.toString() });
     const url = URL.createObjectURL(blob);
 
     try {
@@ -87,14 +85,24 @@
   // @ts-ignore
   const vscode = acquireVsCodeApi();
 
+  /** The document body. */
   const body = document.body;
 
-  const canvasId = 'magick-image';
-  const hideInitiallyClass = 'hide-initially';
+  /** Elements with this class will get hidden from view. */
+  const hiddenClass = 'hidden';
 
-  const canvasElement = document.getElementById(canvasId);
-  const initiallyHiddenElements = document.getElementsByClassName(hideInitiallyClass);
-  
+  /** The element which contains the canvas and anything else with it. */
+  const wrapperElement = document.getElementById('magick-image-wrapper');
+
+  /** The actual canvas element that displays the image. */
+  const canvasElement = document.getElementById('magick-image');
+
+  /** All elements that start with the hidden class, should be unhidden when ready. */
+  const initiallyHiddenElements = document.getElementsByClassName(hiddenClass);
+
+  /** These elements should be hidden after the document is ready. */
+  const hideAfterElements = document.getElementsByClassName('hide-after');
+
   const editor = new MagickEditor(canvasElement);
 
   window.addEventListener('message', (event) => {
@@ -103,16 +111,16 @@
     canvasElement.style.height = value.height;
     canvasElement.style.width = value.width;
 
-    console.log(JSON.stringify(value));
-
     switch (type) {
       case 'init':
         console.log('Loading initial data into canvas.');
         editor.reset(value);
 
         for (const initiallyHiddenElement of initiallyHiddenElements)
-          initiallyHiddenElement.classList.remove(hideInitiallyClass);
+          initiallyHiddenElement.classList.remove(hiddenClass);
 
+        for (const hideAfterElement of hideAfterElements)
+          hideAfterElement.classList.add(hiddenClass);
         break;
       case 'update':
         const data = value.content ? new Uint8Array(value.content.data) : undefined;
@@ -134,8 +142,8 @@
     pos3 = event.clientX;
     pos4 = event.clientY;
 
-    canvasElement.style.top = (canvasElement.offsetTop - pos2) + "px";
-    canvasElement.style.left = (canvasElement.offsetLeft - pos1) + "px";
+    wrapperElement.style.top = (wrapperElement.offsetTop - pos2) + "px";
+    wrapperElement.style.left = (wrapperElement.offsetLeft - pos1) + "px";
   };
 
   const stopDragging = () => {

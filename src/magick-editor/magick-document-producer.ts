@@ -23,12 +23,37 @@ import { MagickFormatInfo } from '@imagemagick/magick-wasm/magick-format-info';
 import { FormatUtils } from '../utils/imagemagick/format-utils';
 import { MagickDocument } from './magick-document';
 import { MagickDocumentContext } from './magick-document-context';
-import { format } from 'path';
+import { MimeType } from '../utils/imagemagick/mime-type';
 
 /**
  * @since 0.2.0
  */
 export class MagickDocumentProducer {
+
+  /** Formats that can be displayed directly in an <img> tag without conversion. */
+  private static imgFriendlyFormats: MagickFormat[] = [
+    MagickFormat.Bmp,
+    MagickFormat.Bmp2,
+    MagickFormat.Bmp3,
+    MagickFormat.Gif,
+    MagickFormat.Gif87,
+    MagickFormat.Ico,
+    MagickFormat.Cur,
+    MagickFormat.Jpg,
+    MagickFormat.Jpeg,
+    MagickFormat.Pjpeg,
+    MagickFormat.Png,
+    MagickFormat.Png00,
+    MagickFormat.Png8,
+    MagickFormat.Png24,
+    MagickFormat.Png32,
+    MagickFormat.Png48,
+    MagickFormat.Png64,
+    MagickFormat.Svg,
+    MagickFormat.Tiff,
+    MagickFormat.Tiff64,
+    MagickFormat.Webp
+  ];
 
   public static async create(
     uri: vscode.Uri,
@@ -62,24 +87,29 @@ export class MagickDocumentProducer {
       try {
         ImageMagick.read(fileData, (image: MagickImage) => {
           console.debug('Succesfully read document:', image.toString());
+          const imageFormat: string = image.format;
+          const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
 
           if (fileFormat) {
-            const imageFormat: string = image.format;
-            const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
-
             if (!magickFileFormat)
               vscode.window.showWarningMessage(`File has no extension, but binary data represents ${magickImageFormat.format}.`);
 
             else if (magickFileFormat.format !== magickImageFormat.format)
               vscode.window.showWarningMessage(`File extension was ${magickFileFormat.format}, but binary data represents ${magickImageFormat.format}.`);
           }
-
-          image.write((bytesToWrite) => {
-            console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
-            const convertedBytes = Buffer.from(bytesToWrite);
-
-            documentContext = new MagickDocumentContext(uri, image, convertedBytes, image.height, image.width);
-          }, MagickFormat.Png);
+          
+          if (this.imgFriendlyFormats.includes(magickImageFormat.format)) {
+            console.log('Format is natively supported by img element, not converting.');
+            const mime = FormatUtils.getMimeType(magickImageFormat.format);
+            documentContext = new MagickDocumentContext(uri, image, fileData, mime, image.height, image.width);
+          } else {
+            image.write((bytesToWrite) => {
+              console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
+              const convertedBytes = Buffer.from(bytesToWrite);
+  
+              documentContext = new MagickDocumentContext(uri, image, convertedBytes, MimeType.Png, image.height, image.width);
+            }, MagickFormat.Png);
+          }
         });
       } catch (err) {
         console.error('Failed to load document or convert to a viewable format.\n', err);
