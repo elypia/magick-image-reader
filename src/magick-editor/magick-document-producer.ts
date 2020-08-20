@@ -97,7 +97,7 @@ export class MagickDocumentProducer {
             else if (magickFileFormat.format !== magickImageFormat.format)
               vscode.window.showWarningMessage(`File extension was ${magickFileFormat.format}, but binary data represents ${magickImageFormat.format}.`);
           }
-          
+
           if (this.imgFriendlyFormats.includes(magickImageFormat.format)) {
             console.log('Format is natively supported by img element, not converting.');
             const mime = FormatUtils.getMimeType(magickImageFormat.format);

@@ -22,16 +22,10 @@
   class MagickEditor {
 
     /** 
-     * @param {HTMLElement} parent 
+     * @param {HTMLElement} wrapper 
      */
-    constructor(parent) {
-      this.wrapper = document.createElement('div');
-      this.wrapper.style.position = 'relative';
-      parent.append(this.wrapper);
-
-      this.initialCanvas = document.createElement('canvas');
-      this.initialCtx = this.initialCanvas.getContext('2d');
-      this.wrapper.append(this.initialCanvas);
+    constructor(wrapper) {
+      this.wrapper = wrapper;
     }
 
     /**
@@ -39,36 +33,18 @@
      */
     async reset(documentContext) {
       const documentData = new Uint8Array(documentContext.documentData.data);
-      const img = await loadImageFromData(documentContext, documentData);
 
-      this.initialCanvas.width = img.width;
-      this.initialCanvas.height = img.height;
-      this.initialCtx.drawImage(img, 0, 0);
-    }
-  }
+      const mimeType = documentContext.mimeType.toString();
+      const blob = new Blob([documentData], { 'type': mimeType });
+      const url = URL.createObjectURL(blob);
+      console.log('Displaying image with MIME type:', mimeType);
 
-  /**
-   * @param {MagickDocumentContext} documentContext
-   * @param {Uint8Array} documentData 
-   * @return {Promise<HTMLImageElement>}
-   */
-  async function loadImageFromData(documentContext, documentData) {
-    const blob = new Blob([documentData], { 'type': documentContext.mimeType.toString() });
-    const url = URL.createObjectURL(blob);
+      const imgElement = document.createElement('img');
+      imgElement.src = url;
+      imgElement.width = documentContext.width;
+      imgElement.height = documentContext.height;
 
-    try {
-      const img = document.createElement('img');
-      img.crossOrigin = 'anonymous';
-      img.src = url;
-
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-
-      return img;
-    } finally {
-      URL.revokeObjectURL(url);
+      this.wrapper.append(imgElement);
     }
   }
 
