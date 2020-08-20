@@ -15,7 +15,7 @@
  */
 
 /**
- * Called by Visual Studio Code whenever a user saved the document
+ * Called by Visual Studio Code whenever a user saves the document
  * to a new location.
  * 
  * @since 0.1.0

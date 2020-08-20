@@ -9,8 +9,13 @@
   <link href="${stylePath}" rel="stylesheet" />
 </head>
 
-<body>
-  <div id="magick-image"></div>
+<body class="grabbable" draggable="true">
+  <div 
+    id="magick-image" 
+    class="hide-initially"
+  >
+
+  </div>
 
   <!-- This must be loaded at the end. -->
   <script nonce="${nonce}" src="${scriptPath}"></script>

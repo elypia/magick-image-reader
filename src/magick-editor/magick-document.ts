@@ -23,35 +23,35 @@ import { MagickEdit } from './magick-edit';
 import { Disposable } from '../utils/disposable';
 import { MagickFormatInfo } from '@imagemagick/magick-wasm/magick-format-info';
 import { FormatUtils } from '../utils/imagemagick/format-utils';
+import { MagickDocumentProducer } from './magick-document-producer';
+import { MagickDocumentContext } from './magick-document-context';
 
 /**
  * @since 0.1.0
  */
 export class MagickDocument extends Disposable implements vscode.CustomDocument {
 
-  private readonly _uri: vscode.Uri;
-
-  private _documentData: Uint8Array;
+  private _documentContext: MagickDocumentContext;
   private _edits: Array<MagickEdit> = [];
   private _savedEdits: Array<MagickEdit> = [];
 
   private readonly _delegate: MagickDocumentDelegate;
 
-  private constructor(
-    uri: vscode.Uri,
-    initialContent: Uint8Array,
+  public constructor(
+    documentContext: MagickDocumentContext,
     delegate: MagickDocumentDelegate
   ) {
     super();
-    this._uri = uri;
-    this._documentData = initialContent;
+    this._documentContext = documentContext;
     this._delegate = delegate;
   }
 
-  public get uri() { return this._uri; }
+  public get uri() { 
+    return this._documentContext.documentUri;
+   }
 
-  public get documentData(): Uint8Array { 
-    return this._documentData;
+  public get documentContext(): MagickDocumentContext { 
+    return this._documentContext;
    }
 
   private readonly _onDidDispose = this.register(new vscode.EventEmitter<void>());
@@ -139,11 +139,11 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
    * Called by VS Code when the user calls `revert` on a document.
    */
   async revert(_cancellation: vscode.CancellationToken): Promise<void> {
-    const diskContent = await MagickDocument.readFile(this.uri);
-    this._documentData = diskContent;
+    const diskContent = await MagickDocumentProducer.readFile(this.uri);
+    this._documentContext = diskContent;
     this._edits = this._savedEdits;
     this._onDidChangeDocument.fire({
-      content: diskContent,
+      content: diskContent.documentData,
       edits: this._edits,
     });
   }
@@ -170,65 +170,11 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
 
     return backup;
   }
-
-  public static async create(
-    uri: vscode.Uri,
-    backupId: string | undefined,
-    delegate: MagickDocumentDelegate
-  ): Promise<MagickDocument | PromiseLike<MagickDocument>> {
-    const dataFile = typeof backupId === 'string' ? vscode.Uri.parse(backupId) : uri;
-    const documentData = await MagickDocument.readFile(dataFile);
-
-    console.log('Creating MagickDocument to send to webview.');
-    return new MagickDocument(uri, documentData, delegate);
-  }
-
-  private static async readFile(uri: vscode.Uri): Promise<Uint8Array> {
-    if (uri.scheme === 'untitled')
-      throw new Error('Can\'t create new file with Image Magick Reader editor');
-
-    return vscode.workspace.fs.readFile(uri).then((fileData: Uint8Array) => {
-      console.log('Loaded document of length:', fileData.length);
-      let convertedBytes: Uint8Array | undefined = undefined;
-      const fileFormat = FormatUtils.getFormat(uri.path);
-      const magickFileFormat = (fileFormat) ? FormatUtils.getFormatInfo(fileFormat) : undefined;
-
-      if (magickFileFormat && !magickFileFormat.isReadable)
-        throw new Error(`Unable to read ${magickFileFormat.format} files, please notify the developer`);
-
-      try {
-        ImageMagick.read(fileData, (image: MagickImage) => {
-          console.debug('Succesfully read document:', image.toString());
-
-          if (fileFormat) {
-            const imageFormat: string = image.format;
-            const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
-
-            if (!magickFileFormat)
-              vscode.window.showWarningMessage(`File has no extension, but binary data represents ${magickImageFormat.format}.`);
-
-            else if (magickFileFormat.format !== magickImageFormat.format)
-              vscode.window.showWarningMessage(`File extension was ${magickFileFormat.format}, but binary data represents ${magickImageFormat.format}.`);
-          }
-
-          image.write((bytesToWrite) => {
-            console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
-            convertedBytes = Buffer.from(bytesToWrite);
-          }, MagickFormat.Png);
-        });
-        
-        if (!convertedBytes)
-          throw new Error('Unable to convert document to viewable format');
-
-        return convertedBytes;
-      } catch (err) {
-        console.error('Failed to load document or convert to a viewable format.\n', err);
-        throw err;
-      }
-    });
-  }
   
+  /**
+   * @returns The URI and length of the document.
+   */
   public toString(): string {
-    return this.uri.toString() + ' ' + this.documentData.length + ' bytes';
+    return this._documentContext.toString();
   }
 }

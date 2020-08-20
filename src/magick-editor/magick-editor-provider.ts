@@ -26,6 +26,7 @@ import { ExtensionEventType } from '../utils/webview/extension-event-type';
 import { ExtensionEvent } from '../utils/webview/extension-event';
 import { WebviewEvent } from '../utils/webview/webview-event';
 import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
+import { MagickDocumentProducer } from './magick-document-producer';
 
 /**
  * The actual editor for ImageMagick types.
@@ -65,7 +66,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
   ): Promise<MagickDocument> {
     console.log('MagickEditor is preparing to open file at:', uri.toString());
 
-    const document: MagickDocument = await MagickDocument.create(uri, openContext.backupId, {
+    const document: MagickDocument = await MagickDocumentProducer.create(uri, openContext.backupId, {
       getFileData: async () => {
         const webviewsForDocument = Array.from(this.webviews.get(document.uri));
 
@@ -127,7 +128,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
           const extensionEvent: ExtensionEvent = {
             type: ExtensionEventType.Init,
-            value: document.documentData
+            value: document.documentContext
           };
           
           webviewPanel.webview.postMessage(extensionEvent);

@@ -23,6 +23,7 @@
 /* Make our DOM the entire webview. */
 html, body {
   height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,9 +31,30 @@ html, body {
 
 /* Create checkered background on. */
 #magick-image {
+  position: absolute;
   background-image: linear-gradient(to right, #18181880, #18181880),
                     linear-gradient(to right, #0c0c0c 50%, #181818 50%),
                     linear-gradient(to bottom, #0c0c0c 50%, #181818 50%);
   background-blend-mode: normal, difference, normal;
   background-size: 14px 14px;
+}
+
+/* Allow users to grab and drag the body. */
+.grabbable {
+  cursor: grab;
+}
+
+/* While users are in the process of grabbing the body. */
+.grabbing:active {
+  cursor: grabbing;
+}
+
+/** Hide these elements, they can be unhidden through JavaScript. */
+.hide-initially {
+  display: none;
+}
+
+/** Custom loading animation just for the canvas.*/
+#magick-image.hide-initially {
+
 }

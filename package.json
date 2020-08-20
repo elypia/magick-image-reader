@@ -114,9 +114,6 @@
             "filenamePattern": "*.dcm"
           },
           {
-            "filenamePattern": "*.dicom"
-          },
-          {
             "filenamePattern": "*.dcr"
           },
           {

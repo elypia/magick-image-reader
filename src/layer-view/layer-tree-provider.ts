@@ -19,7 +19,6 @@ import {ImageMagick} from "@imagemagick/magick-wasm";
 import {DocumentNode} from './document-node';
 
 /**
- * TODO: This is incomplete.
  * Reads the file and provides a tree-view of all layers in the document.
  * Each layer can be clicked to give view the image in that particular layer
  * or group.

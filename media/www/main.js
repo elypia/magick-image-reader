@@ -41,22 +41,16 @@
     }
 
     /**
-     * @param {Uint8Array | undefined} data 
+     * @param {MagickDocumentContext} documentContext 
      */
-    async reset(data) {
-      console.log('Call to reset was made.');
+    async reset(documentContext) {
+      const documentData = new Uint8Array(documentContext.documentData.data);
 
-      if (data) {
-        try {
-          const img = await loadImageFromData(data);
-          this.initialCanvas.width = img.naturalWidth;
-          this.initialCanvas.height = img.naturalHeight;
-          
-          this.initialCtx.drawImage(img, 0, 0);
-        } catch (err) {
-          console.error(err);
-        }
-      }
+      const img = await loadImageFromData(documentContext, documentData);
+      this.initialCanvas.width = img.width;
+      this.initialCanvas.height = img.height;
+
+      this.initialCtx.drawImage(img, 0, 0);
     }
 
     /** 
@@ -77,11 +71,12 @@
   }
 
   /**
-   * @param {Uint8Array} initialContent 
+   * @param {MagickDocumentContext} documentContext
+   * @param {Uint8Array} documentData 
    * @return {Promise<HTMLImageElement>}
    */
-  async function loadImageFromData(initialContent) {
-    const blob = new Blob([initialContent], { 'type': 'image/png' });
+  async function loadImageFromData(documentContext, documentData) {
+    const blob = new Blob([documentData], { 'type': 'image/png' });
     const url = URL.createObjectURL(blob);
 
     try {
@@ -103,16 +98,30 @@
   // @ts-ignore
   const vscode = acquireVsCodeApi();
 
-  const canvasElement = document.getElementById('magick-image');
+  const body = document.body;
+
+  const canvasId = 'magick-image';
+  const hideInitiallyClass = 'hide-initially';
+
+  const canvasElement = document.getElementById(canvasId);
+  const initiallyHiddenElements = document.getElementsByClassName(hideInitiallyClass);
+  
   const editor = new MagickEditor(canvasElement);
 
   window.addEventListener('message', async (event) => {
     const { type, value, requestId } = event.data;
 
+    canvasElement.style.height = value.height;
+    canvasElement.style.width = value.width;
+
     switch (type) {
       case 'init':
         console.log('Loading initial data into canvas.');
-        await editor.reset(new Uint8Array(value.data));
+        await editor.reset(value);
+
+        for (const initiallyHiddenElement of initiallyHiddenElements)
+          initiallyHiddenElement.classList.remove(hideInitiallyClass);
+
         break;
       case 'update':
         const data = value.content ? new Uint8Array(value.content.data) : undefined;
@@ -126,6 +135,37 @@
         console.warn('Unknown event type received.');
     }
   });
+
+  let pos1 = 0;
+  let pos2 = 0;
+  let pos3 = 0;
+  let pos4 = 0;
+
+  const startDragging = (event) => {
+    event.preventDefault();
+    pos1 = pos3 - event.clientX;
+    pos2 = pos4 - event.clientY;
+    pos3 = event.clientX;
+    pos4 = event.clientY;
+
+    canvasElement.style.top = (canvasElement.offsetTop - pos2) + "px";
+    canvasElement.style.left = (canvasElement.offsetLeft - pos1) + "px";
+  };
+
+  const stopDragging = () => {
+    body.removeEventListener('mousemove', startDragging);
+  };
+
+  body.addEventListener('mousedown', (event) => {
+    event.preventDefault();
+    pos3 = event.clientX;
+    pos4 = event.clientY;
+
+    body.addEventListener('mousemove', startDragging);
+  });
+
+  document.addEventListener('mouseup', stopDragging);
+  document.addEventListener('mouseleave', stopDragging);
 
   vscode.postMessage({ type: 'ready' });
 }());

@@ -10,10 +10,6 @@ import { Magick } from "@imagemagick/magick-wasm/magick";
  */
 export class FormatUtils {
 
-  /** Aliases for the formats supported my ImageMagick but not statically known. */
-  private static readonly formatAliases = new Map<MagickFormat, string[]>()
-    .set(MagickFormat.Tiff, [ 'TIF' ]);
-
   /**
    * @param path A path to take the extension from.
    * @returns The extension of the path, or undefined if it has no extension.
@@ -34,14 +30,6 @@ export class FormatUtils {
 
     for (const formatInfo of Magick.supportedFormats) {
       if (extension === formatInfo.format)
-        return formatInfo;
-
-      const aliases = this.formatAliases.get(formatInfo.format);
-
-      if (!aliases)
-        continue;
-
-      if (aliases.includes(extension))
         return formatInfo;
     }
 
