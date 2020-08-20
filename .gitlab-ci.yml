@@ -18,4 +18,6 @@ deploy:
   only: 
     - tags
   script: 
+    - npm run compile
+    - npm run package
     - npm run publish
