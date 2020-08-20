@@ -16,6 +16,6 @@ build:
 deploy:
   stage: deploy
   only: 
-    - tag
+    - tags
   script: 
     - npm run publish
