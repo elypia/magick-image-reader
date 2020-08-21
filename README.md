@@ -1,4 +1,9 @@
-# Magick Image Reader [![Matrix]][matrix-community] [![Discord]][discord-guild] [![Marketplace]][vscode-market-link] [![Build]][gitlab] [![Coverage]][gitlab] [![Donate]][elypia-donate]
+<div align="center">
+
+# Magick Image Reader
+[![Matrix]][matrix-community] [![Discord]][discord-guild] [![Marketplace]][vscode-market-link] [![Build]][gitlab] [![Coverage]][gitlab] [![Donate]][elypia-donate]
+</div>
+
 **HEADS UP: This extension is in very early development and depends heavily on [Magick.WASM](https://github.com/dlemstra/Magick.WASM) which is also in very early development. While this extension is functional, it should not be considered stable yet.**
 
 ## About
