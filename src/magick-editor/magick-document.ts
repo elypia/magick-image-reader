@@ -15,14 +15,8 @@
  */
 
 import * as vscode from 'vscode';
-import { ImageMagick } from '@imagemagick/magick-wasm';
-import { MagickImage } from '@imagemagick/magick-wasm/magick-image';
-import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
-import { MagickDocumentDelegate } from './magick-document-delegate';
 import { MagickEdit } from './magick-edit';
 import { Disposable } from '../utils/disposable';
-import { MagickFormatInfo } from '@imagemagick/magick-wasm/magick-format-info';
-import { FormatUtils } from '../utils/imagemagick/format-utils';
 import { MagickDocumentProducer } from './magick-document-producer';
 import { MagickDocumentContext } from './magick-document-context';
 
@@ -35,15 +29,9 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
   private _edits: Array<MagickEdit> = [];
   private _savedEdits: Array<MagickEdit> = [];
 
-  private readonly _delegate: MagickDocumentDelegate;
-
-  public constructor(
-    documentContext: MagickDocumentContext,
-    delegate: MagickDocumentDelegate
-  ) {
+  public constructor(documentContext: MagickDocumentContext) {
     super();
     this._documentContext = documentContext;
-    this._delegate = delegate;
   }
 
   public get uri() { 
@@ -128,11 +116,9 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
    * Called by VS Code when the user saves the document to a new location.
    */
   async saveAs(targetResource: vscode.Uri, cancellation: vscode.CancellationToken): Promise<void> {
-    const fileData = await this._delegate.getFileData();
     if (cancellation.isCancellationRequested) {
       return;
     }
-    await vscode.workspace.fs.writeFile(targetResource, fileData);
   }
 
   /**

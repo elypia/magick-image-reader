@@ -18,10 +18,8 @@ import * as vscode from 'vscode';
 import { ImageMagick } from '@imagemagick/magick-wasm';
 import { MagickImage } from '@imagemagick/magick-wasm/magick-image';
 import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
-import { MagickDocumentDelegate } from './magick-document-delegate';
 import { MagickFormatInfo } from '@imagemagick/magick-wasm/magick-format-info';
 import { FormatUtils } from '../utils/imagemagick/format-utils';
-import { MagickDocument } from './magick-document';
 import { MagickDocumentContext } from './magick-document-context';
 import { MimeType } from '../utils/imagemagick/mime-type';
 
@@ -54,18 +52,6 @@ export class MagickDocumentProducer {
     MagickFormat.Tiff64,
     MagickFormat.Webp
   ];
-
-  public static async create(
-    uri: vscode.Uri,
-    backupId: string | undefined,
-    delegate: MagickDocumentDelegate
-  ): Promise<MagickDocument | PromiseLike<MagickDocument>> {
-    const dataFile = typeof backupId === 'string' ? vscode.Uri.parse(backupId) : uri;
-    const documentData = await MagickDocumentProducer.readFile(dataFile);
-
-    console.log('Creating MagickDocument to send to webview.');
-    return new MagickDocument(documentData, delegate);
-  }
 
   /**
    * @param uri The location of the document to load.
@@ -101,13 +87,13 @@ export class MagickDocumentProducer {
           if (this.imgFriendlyFormats.includes(magickImageFormat.format)) {
             console.log('Format is natively supported by img element, not converting.');
             const mime = FormatUtils.getMimeType(magickImageFormat.format);
-            documentContext = new MagickDocumentContext(uri, image, fileData, mime, image.height, image.width);
+            documentContext = new MagickDocumentContext(uri, false, fileData, mime, image.height, image.width);
           } else {
             image.write((bytesToWrite) => {
               console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
               const convertedBytes = Buffer.from(bytesToWrite);
   
-              documentContext = new MagickDocumentContext(uri, image, convertedBytes, MimeType.Png, image.height, image.width);
+              documentContext = new MagickDocumentContext(uri, true, convertedBytes, MimeType.Png, image.height, image.width);
             }, MagickFormat.Png);
           }
         });

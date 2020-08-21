@@ -3,17 +3,16 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${cspSource} blob:; style-src ${cspSource}; script-src 'nonce-${nonce}';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${cspSource} blob:; style-src 'self' 'nonce-${nonce}'; script-src 'nonce-${nonce}';">
   <title>Magick Image Reader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="${stylePath}" rel="stylesheet" />
+  <link href="${stylePath}" rel="stylesheet" type="text/css" nonce="${nonce}"/>
 </head>
 
 <body class="grabbable" draggable="true">
   <div id="magick-image-wrapper">
     <div id="magick-image" class="hidden"></div>
   </div>
-
 
   <!-- This must be loaded at the end. -->
   <script nonce="${nonce}" src="${scriptPath}"></script>

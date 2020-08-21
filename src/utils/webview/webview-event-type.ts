@@ -23,8 +23,5 @@
 export enum WebviewEventType {
 
   /** When the webview is ready. */
-  Ready = 'ready',
-
-  /** A response from the webview if the prior request warrants one. */
-  Response = 'response'
+  Ready = 'ready'
 }

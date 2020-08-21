@@ -98,9 +98,6 @@
         for (const hideAfterElement of hideAfterElements)
           hideAfterElement.classList.add(hiddenClass);
         break;
-      case 'update':
-        const data = value.content ? new Uint8Array(value.content.data) : undefined;
-        break;
       default:
         console.warn('Unknown event type received.');
     }

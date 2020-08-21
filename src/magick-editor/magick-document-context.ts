@@ -14,8 +14,8 @@ export class MagickDocumentContext {
   /** The Visual Studio Code URI of the original resource. */
   public documentUri: vscode.Uri;
 
-  /** The ImageMagick view of the original document. */
-  public magickImage: MagickImage;
+  /** If the data represents the URI, or has been modified in memory. */
+  public modified: boolean;
 
   /** The raw data that represents the viewable document. */
   public documentData: Uint8Array;
@@ -31,14 +31,14 @@ export class MagickDocumentContext {
 
   public constructor(
     documentUri: vscode.Uri, 
-    magickImage: MagickImage,
+    modified: boolean,
     documentData: Uint8Array,
     mimeType: MimeType, 
     height: number, 
     width: number
   ) {
     this.documentUri = documentUri;
-    this.magickImage = magickImage;
+    this.modified = modified;
     this.documentData = documentData;
     this.mimeType = mimeType;
     this.height = height;

@@ -38,64 +38,26 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
   /** Tracks all known webviews. */
   private readonly webviews: WebviewCollection;
 
-  /** All callbacks that are pending from the view. */
-  private readonly callbacks: Map<number, (response: any) => void>;
-
   /** 
    * After we request the static webview HTML the first time, we store the result
    * so we don't have to query it again as this won't change within the same session.
    */
   private staticWebviewHtml: Thenable<string> | undefined;
 
-  private request: number;
-
-  constructor(private readonly _context: vscode.ExtensionContext) {
+  constructor(private readonly context: vscode.ExtensionContext) {
     console.log('Initialized instance of MagickEditorProvider.');
-
     this.webviews = new WebviewCollection();
-    this.callbacks = new Map<number, (response: any) => void>();
-    this.request = 0;
   }
 
-  public async openCustomDocument(
-    uri: vscode.Uri,
-    openContext: vscode.CustomDocumentOpenContext,
-    cancellationToken: vscode.CancellationToken
-  ): Promise<MagickDocument> {
+  public async openCustomDocument(uri: vscode.Uri): Promise<MagickDocument> {
     console.log('MagickEditor is preparing to open file at:', uri.toString());
 
-    const document: MagickDocument = await MagickDocumentProducer.create(uri, openContext.backupId, {
-      getFileData: async () => {
-        const webviewsForDocument = Array.from(this.webviews.get(document.uri));
-
-        if (!webviewsForDocument.length)
-          throw new Error('Could not find webview to save for');
-
-        const panel = webviewsForDocument[0];
-        const response = await this.postMessageWithResponse<number[]>(panel, 'getFileData', {});
-        console.log('Send panel, and received response with content:', response);
-        return new Uint8Array(response);
-      }
-    });
-
+    const documentContext = await MagickDocumentProducer.readFile(uri);
+    const document: MagickDocument = new MagickDocument(documentContext);
     const listeners: vscode.Disposable[] = [];
 
     listeners.push(document.onDidChange(e => {
       this._onDidChangeCustomDocument.fire({ document, ...e });
-    }));
-
-    listeners.push(document.onDidChangeContent(e => {
-      for (const webviewPanel of this.webviews.get(document.uri)) {
-        const extensionEvent: ExtensionEvent = {
-          type: ExtensionEventType.Update,
-          value: {
-            edits: e.edits,
-            content: e.content
-          }
-        };
-        
-        webviewPanel.webview.postMessage(extensionEvent);
-      }
     }));
 
     document.onDidDispose(() => Disposable.disposeAll(listeners));
@@ -103,11 +65,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     return document;
   }
 
-  public async resolveCustomEditor(
-    document: MagickDocument,
-    webviewPanel: vscode.WebviewPanel,
-    cancellationToken: vscode.CancellationToken
-  ): Promise<void> {
+  public async resolveCustomEditor(document: MagickDocument, webviewPanel: vscode.WebviewPanel): Promise<void> {
     this.webviews.add(document.uri, webviewPanel);
 
     webviewPanel.webview.options = {
@@ -130,11 +88,6 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
           };
           
           webviewPanel.webview.postMessage(extensionEvent);
-          break;
-        case WebviewEventType.Response:
-          const value: any = event.value;
-          const callback = this.callbacks.get(value.requestId);
-          callback?.(value.body);
           break;
         default:
           throw new Error('Received unknown event from webview: ' + event.type);
@@ -161,13 +114,6 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     return document.backup(context.destination, cancellation);
   }
 
-  private postMessageWithResponse<R = unknown>(panel: vscode.WebviewPanel, type: string, body: any): Promise<R> {
-    const requestId = ++this.request;
-    const p = new Promise<R>(resolve => this.callbacks.set(requestId, resolve));
-    panel.webview.postMessage({ type, requestId, body });
-    return p;
-  }
-
   /**
 	 * Get the static HTML used for in our editor's webviews.
    * 
@@ -175,7 +121,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
    * @returns The HTML content to represents the desired webview.
 	 */
   private async getWebviewHtml(webview: vscode.Webview): Promise<string> {
-    const wwwPath: vscode.Uri = vscode.Uri.joinPath(this._context.extensionUri, 'media', 'www');
+    const wwwPath: vscode.Uri = vscode.Uri.joinPath(this.context.extensionUri, 'media', 'www');
     const scriptPath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'main.js'));
     const stylePath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'main.css'));
 
