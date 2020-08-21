@@ -22,8 +22,6 @@
   */
  export enum ExtensionEventType {
 
-  /** When the extension is done intializing. */
-  Init = 'init',
 
   /** When the extention has an update to send to the webview. */
   Update = 'update'

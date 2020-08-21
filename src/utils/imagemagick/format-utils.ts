@@ -29,14 +29,25 @@ export class FormatUtils {
   /**
    * @param path A path to take the extension from.
    * @returns The extension of the path, or undefined if it has no extension.
+   * @throws If null or empty string is provided, or path has no extension.
    */
-  public static getFormat(path: string): string | undefined {
-    return path.split('.').pop();
+  public static getExtension(path: string): string {
+    if (!path)
+      throw new Error('Can\'t get the extension from a null or empty string');
+
+    const split = path.split('.');
+    const length = split.length;
+
+    if (length == 1)
+      return 'Path provided has no file extension';
+
+    return split[length - 1];
   }
 
   /**
    * @param extension A file extension to return typed information for.
    * @returns A MagickFormatInfo object which static information on the format.
+   * @throws If the file extension is not known to ImageMagick.
    */
   public static getFormatInfo(extension: string): MagickFormatInfo {
     if (!extension)
@@ -52,6 +63,11 @@ export class FormatUtils {
     throw new Error('Format not compatible with ImageMagick, please notify the developer');
   }
 
+  /**
+   * @param format The document format to get the MIME type for.
+   * @returns The MIME type of the specified format.
+   * @throws If MIME type for the specified format is not known.
+   */
   public static getMimeType(format: MagickFormat): MimeType {
     switch (format) {
       case MagickFormat.Bmp: 

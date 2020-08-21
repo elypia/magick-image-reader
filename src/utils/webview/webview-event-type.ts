@@ -22,6 +22,4 @@
   */
 export enum WebviewEventType {
 
-  /** When the webview is ready. */
-  Ready = 'ready'
 }

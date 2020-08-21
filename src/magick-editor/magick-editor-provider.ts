@@ -16,13 +16,10 @@
 
 import * as vscode from 'vscode';
 import { MagickDocument } from './magick-document';
-import { WebviewCollection } from '../utils/webview/webview-collection';
 import { Interpolator } from '../utils/interpolator';
 import { Nonce } from '../utils/nonce';
 import { Disposable } from '../utils/disposable';
 import { WebviewEventType } from '../utils/webview/webview-event-type';
-import { ExtensionEventType } from '../utils/webview/extension-event-type';
-import { ExtensionEvent } from '../utils/webview/extension-event';
 import { WebviewEvent } from '../utils/webview/webview-event';
 import { MagickDocumentProducer } from './magick-document-producer';
 
@@ -35,8 +32,7 @@ import { MagickDocumentProducer } from './magick-document-producer';
  */
 export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider {
 
-  /** Tracks all known webviews. */
-  private readonly webviews: WebviewCollection;
+  private readonly magickDocuments: Set<MagickDocument>;
 
   /** 
    * After we request the static webview HTML the first time, we store the result
@@ -46,7 +42,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
   constructor(private readonly context: vscode.ExtensionContext) {
     console.log('Initialized instance of MagickEditorProvider.');
-    this.webviews = new WebviewCollection();
+    this.magickDocuments = new Set<MagickDocument>();
   }
 
   public async openCustomDocument(uri: vscode.Uri): Promise<MagickDocument> {
@@ -65,30 +61,20 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     return document;
   }
 
-  public async resolveCustomEditor(document: MagickDocument, webviewPanel: vscode.WebviewPanel): Promise<void> {
-    this.webviews.add(document.uri, webviewPanel);
+  public async resolveCustomEditor(magickDocument: MagickDocument, webviewPanel: vscode.WebviewPanel): Promise<void> {
+    this.magickDocuments.add(magickDocument);
 
     webviewPanel.webview.options = {
       enableScripts: true
     };
 
-    webviewPanel.webview.html = await this.getWebviewHtml(webviewPanel.webview);
-    console.log('Rendering HTML for document with URI:', document.toString());
+    webviewPanel.webview.html = await this.getWebviewHtml(magickDocument, webviewPanel.webview);
+    console.log('Rendering HTML for document with URI:', magickDocument.toString());
 
     webviewPanel.webview.onDidReceiveMessage((event: WebviewEvent) => {
       const type: WebviewEventType = event.type;      
 
       switch (type) {
-        case WebviewEventType.Ready:
-          console.log('Ready event received from webview.');
-
-          const extensionEvent: ExtensionEvent = {
-            type: ExtensionEventType.Init,
-            value: document.documentContext
-          };
-          
-          webviewPanel.webview.postMessage(extensionEvent);
-          break;
         default:
           throw new Error('Received unknown event from webview: ' + event.type);
       }
@@ -120,7 +106,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
    * @param webview
    * @returns The HTML content to represents the desired webview.
 	 */
-  private async getWebviewHtml(webview: vscode.Webview): Promise<string> {
+  private async getWebviewHtml(magickDocument: MagickDocument, webview: vscode.Webview): Promise<string> {
     const wwwPath: vscode.Uri = vscode.Uri.joinPath(this.context.extensionUri, 'media', 'www');
     const scriptPath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'main.js'));
     const stylePath: vscode.Uri = webview.asWebviewUri(vscode.Uri.joinPath(wwwPath, 'main.css'));
@@ -130,7 +116,8 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     const variables: Map<string, string> = new Map<string, string>()
       .set('nonce', Nonce.generate())
       .set('scriptPath', scriptPath.toString())
-      .set('stylePath', stylePath.toString());
+      .set('stylePath', stylePath.toString())
+      .set('initialContext', JSON.stringify(magickDocument.documentContext).replace(/"/g, '&quot;'));
 
     const interpolator: Interpolator = new Interpolator(variables);
     const html = interpolator.interpolate(staticHtmlTemplate);

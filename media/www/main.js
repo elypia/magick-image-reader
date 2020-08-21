@@ -18,7 +18,6 @@
 "use strict";
 
 (function () {
-
   class MagickEditor {
 
     /** 
@@ -28,22 +27,26 @@
       this.wrapper = wrapper;
     }
 
-    /**
-     * @param {MagickDocumentContext} documentContext 
-     */
-    async reset(documentContext) {
-      const documentData = new Uint8Array(documentContext.documentData.data);
-
-      const mimeType = documentContext.mimeType.toString();
-      const blob = new Blob([documentData], { 'type': mimeType });
-      const url = URL.createObjectURL(blob);
-      console.log('Displaying image with MIME type:', mimeType);
+    async loadImage(documentContext) {
 
       const imgElement = document.createElement('img');
-      imgElement.src = url;
-      imgElement.width = documentContext.width;
-      imgElement.height = documentContext.height;
+      imgElement.width = documentContext._width;
+      imgElement.height = documentContext._height;
 
+      const mimeType = documentContext._mimeType.toString();
+
+      // if (documentContext._modified) {
+        const documentData = new Uint8Array(documentContext._documentData.data);
+        const blob = new Blob([documentData], { 
+          'type': mimeType 
+        });
+        const url = URL.createObjectURL(blob);
+        imgElement.src = url;
+      // } else {
+      //   imgElement.src = documentContext.webviewUri;
+      // }
+      
+      console.log('Displaying image with MIME type:', mimeType);
       this.wrapper.append(imgElement);
     }
   }
@@ -56,6 +59,19 @@
 	 */
 	function round(value, min, max) {
 		return Math.min(Math.max(value, min), max);
+  }
+  
+  /**
+   * The initial state of the context is sent through a meta field
+   * in the <head> since it's a lot quicker to load.
+   */
+  function getInitialContext() {
+    const initialContentElement = document.getElementById('initial-context');
+    const initialContent = JSON.parse(initialContentElement.getAttribute('data-initial-context'));
+    
+    editor.loadImage(initialContent);
+    canvasElement.style.height = initialContent._height;
+    canvasElement.style.width = initialContent._width;
 	}
 
   // @ts-ignore
@@ -81,23 +97,16 @@
 
   const editor = new MagickEditor(canvasElement);
 
+  getInitialContext();
+
+  for (const initiallyHiddenElement of initiallyHiddenElements)
+    initiallyHiddenElement.classList.remove(hiddenClass);
+
+  for (const hideAfterElement of hideAfterElements)
+    hideAfterElement.classList.add(hiddenClass);
+
   window.addEventListener('message', (event) => {
-    const { type, value, requestId } = event.data;
-
-    canvasElement.style.height = value.height;
-    canvasElement.style.width = value.width;
-
-    switch (type) {
-      case 'init':
-        console.log('Loading initial data into canvas.');
-        editor.reset(value);
-
-        for (const initiallyHiddenElement of initiallyHiddenElements)
-          initiallyHiddenElement.classList.remove(hiddenClass);
-
-        for (const hideAfterElement of hideAfterElements)
-          hideAfterElement.classList.add(hiddenClass);
-        break;
+    switch (event.type) {
       default:
         console.warn('Unknown event type received.');
     }
@@ -133,6 +142,4 @@
 
   document.addEventListener('mouseup', stopDragging);
   document.addEventListener('mouseleave', stopDragging);
-
-  vscode.postMessage({ type: 'ready' });
 }());

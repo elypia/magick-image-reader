@@ -29,11 +29,12 @@ html, body {
   align-items: center;
 }
 
+/* Wrapper element that contains the canvas and everything relative to it. */
 #magick-image-wrapper {
   position: absolute;
 }
 
-/* Create checkered background on. */
+/* Create checkered background on canvas. */
 #magick-image {
   background-image: linear-gradient(to right, #18181880, #18181880),
                     linear-gradient(to right, #0c0c0c 50%, #181818 50%),

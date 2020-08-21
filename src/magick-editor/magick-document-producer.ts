@@ -64,7 +64,7 @@ export class MagickDocumentProducer {
 
     await vscode.workspace.fs.readFile(uri).then((fileData: Uint8Array) => {
       console.log('Loaded document of length:', fileData.length);
-      const fileFormat = FormatUtils.getFormat(uri.path);
+      const fileFormat = FormatUtils.getExtension(uri.path);
       const magickFileFormat = (fileFormat) ? FormatUtils.getFormatInfo(fileFormat) : undefined;
 
       if (magickFileFormat && !magickFileFormat.isReadable)
@@ -87,13 +87,12 @@ export class MagickDocumentProducer {
           if (this.imgFriendlyFormats.includes(magickImageFormat.format)) {
             console.log('Format is natively supported by img element, not converting.');
             const mime = FormatUtils.getMimeType(magickImageFormat.format);
-            documentContext = new MagickDocumentContext(uri, false, fileData, mime, image.height, image.width);
+            documentContext = new MagickDocumentContext(uri, false, fileData, mime, image.width, image.height);
           } else {
             image.write((bytesToWrite) => {
               console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
               const convertedBytes = Buffer.from(bytesToWrite);
-  
-              documentContext = new MagickDocumentContext(uri, true, convertedBytes, MimeType.Png, image.height, image.width);
+              documentContext = new MagickDocumentContext(uri, true, convertedBytes, MimeType.Png, image.width, image.height);
             }, MagickFormat.Png);
           }
         });
