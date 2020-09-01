@@ -28,6 +28,12 @@ import { MimeType } from '../utils/imagemagick/mime-type';
  */
 export class MagickDocumentProducer {
 
+  /**
+   * Check statically if the system is a Mac.
+   * We perform this only once as we don't expect the system to change mid session.
+   */
+  private static isMac: boolean = process.platform === 'darwin';
+
   /** Formats that can be displayed directly in an <img> tag without conversion. */
   private static imgFriendlyFormats: MagickFormat[] = [
     MagickFormat.Bmp,
@@ -48,6 +54,7 @@ export class MagickDocumentProducer {
     MagickFormat.Png48,
     MagickFormat.Png64,
     MagickFormat.Svg,
+    MagickFormat.Tif,
     MagickFormat.Tiff,
     MagickFormat.Tiff64,
     MagickFormat.Webp
@@ -87,12 +94,12 @@ export class MagickDocumentProducer {
           if (this.imgFriendlyFormats.includes(magickImageFormat.format)) {
             console.log('Format is natively supported by img element, not converting.');
             const mime = FormatUtils.getMimeType(magickImageFormat.format);
-            documentContext = new MagickDocumentContext(uri, false, fileData, mime, image.width, image.height);
+            documentContext = new MagickDocumentContext(uri, false, fileData, mime, image.width, image.height, MagickDocumentProducer.isMac);
           } else {
             image.write((bytesToWrite) => {
               console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
               const convertedBytes = Buffer.from(bytesToWrite);
-              documentContext = new MagickDocumentContext(uri, true, convertedBytes, MimeType.Png, image.width, image.height);
+              documentContext = new MagickDocumentContext(uri, true, convertedBytes, MimeType.Png, image.width, image.height, MagickDocumentProducer.isMac);
             }, MagickFormat.Png);
           }
         });

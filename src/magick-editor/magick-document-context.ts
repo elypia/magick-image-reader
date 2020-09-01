@@ -22,7 +22,7 @@ import { MimeType } from '../utils/imagemagick/mime-type';
  * Stores the context for a MagickDocument.
  * This ensures all relevent information is sent to the webview
  * at once to give it context on the image it's about to render.
- * 
+ *
  * @since 0.2.0
  */
 export class MagickDocumentContext {
@@ -45,13 +45,17 @@ export class MagickDocumentContext {
   /** The height of the document. */
   public _height: number;
 
+  /** If the system this document was loaded in was a Mac. */
+  public _isMac: boolean;
+
   public constructor(
-    documentUri: vscode.Uri, 
+    documentUri: vscode.Uri,
     modified: boolean,
     documentData: Uint8Array,
-    mimeType: MimeType, 
+    mimeType: MimeType,
     width: number,
-    height: number
+    height: number,
+    isMac: boolean
   ) {
     this._documentUri = documentUri;
     this._modified = modified;
@@ -59,6 +63,7 @@ export class MagickDocumentContext {
     this._mimeType = mimeType;
     this._width = width;
     this._height = height;
+    this._isMac = isMac;
   }
 
   public get documentUri(): vscode.Uri {
@@ -83,6 +88,10 @@ export class MagickDocumentContext {
 
   public get height(): number {
     return this._height;
+  }
+
+  public get isMac(): boolean {
+    return this._isMac;
   }
 
   public toString(): string {

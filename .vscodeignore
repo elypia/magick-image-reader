@@ -7,4 +7,5 @@ test-assets/
 .vscodeignore
 *.vsix
 NOTICE
+package-lock.json
 tsconfig.json

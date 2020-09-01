@@ -22,19 +22,20 @@ import { Disposable } from '../utils/disposable';
 import { WebviewEventType } from '../utils/webview/webview-event-type';
 import { WebviewEvent } from '../utils/webview/webview-event';
 import { MagickDocumentProducer } from './magick-document-producer';
+import { BackgroundUtils } from '../utils/background-utils';
 
 /**
  * The actual editor for ImageMagick types.
  * This is used by all images loaded via ImageMagick to display
  * a web friendly version of it.
- * 
+ *
  * @since 0.1.0
  */
 export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider {
 
   private readonly magickDocuments: Set<MagickDocument>;
 
-  /** 
+  /**
    * After we request the static webview HTML the first time, we store the result
    * so we don't have to query it again as this won't change within the same session.
    */
@@ -72,7 +73,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     console.log('Rendering HTML for document with URI:', magickDocument.toString());
 
     webviewPanel.webview.onDidReceiveMessage((event: WebviewEvent) => {
-      const type: WebviewEventType = event.type;      
+      const type: WebviewEventType = event.type;
 
       switch (type) {
         default:
@@ -102,7 +103,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
   /**
 	 * Get the static HTML used for in our editor's webviews.
-   * 
+   *
    * @param webview
    * @returns The HTML content to represents the desired webview.
 	 */
@@ -113,10 +114,18 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
     const staticHtmlTemplate: string = await this.getStaticWebviewHtml(webview, wwwPath);
 
+    const config: vscode.WorkspaceConfiguration = vscode.workspace.getConfiguration(
+      'magickImageReader', magickDocument.uri
+    );
+
+    const imageBackground: string = config.get('imageBackground', 'checkered');
+    const style = BackgroundUtils.getBackgroundById(imageBackground).getBackground(config);
+
     const variables: Map<string, string> = new Map<string, string>()
       .set('nonce', Nonce.generate())
       .set('scriptPath', scriptPath.toString())
       .set('stylePath', stylePath.toString())
+      .set('imageBackgroundCss', BackgroundUtils.convertToCssProperties(style))
       .set('initialContext', JSON.stringify(magickDocument.documentContext).replace(/"/g, '&quot;'));
 
     const interpolator: Interpolator = new Interpolator(variables);
@@ -129,7 +138,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
    * that can be collected here and only run once per session and in this method.
    * The actual getWebviewHtml method contains the dynamic parts which may change
    * the HTML content per function call.
-   * 
+   *
    * @returns The webview HTML that statically remains the same
    * between all webviews in the session.
    */

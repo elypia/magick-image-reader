@@ -1,12 +1,12 @@
 {
-  "version": "0.3.0",
+  "version": "0.4.0",
   "name": "magick-image-reader",
-  "displayName": "Magick Image Reader",
+  "displayName": "%displayName%",
   "author": "Elypia",
   "publisher": "elypia",
   "icon": "assets/magick-image-reader-logo.png",
   "homepage": "https://gitlab.com/Elypia/magick-image-reader#readme",
-  "description": "Uses ImageMagick to add read-only views of over 100 image formats in Visual Studio Code.",
+  "description": "%description%",
   "license": "Apache-2.0",
   "keywords": [
     "elypia",
@@ -22,24 +22,80 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/Elypia/magick-image-reader.git"
+    "url": "https://gitlab.com/Elypia/magick-image-reader.git"
   },
   "bugs": {
     "url": "https://gitlab.com/Elypia/magick-image-reader/issues"
   },
   "main": "./out/extension.js",
-  "engines": {
-    "vscode": "^1.47.0"
-  },
   "activationEvents": [
     "onCustomEditor:magickImageReader.readImage",
     "onView:magickImageReader.layerViewer"
   ],
   "contributes": {
+    "configuration": {
+      "title": "%configuration.title%",
+      "properties": {
+        "magickImageReader.imageBackground": {
+          "type": "string",
+          "scope": "resource",
+          "default": "checkered",
+          "description": "%configuration.imageBackground.description%",
+          "enum": [
+            "checkered",
+            "transparent",
+            "custom"
+          ],
+          "enumDescriptions": [
+            "%configuration.imageBackground.checkered%",
+            "%configuration.imageBackground.transaparent%",
+            "%configuration.imageBackground.custom%"
+          ]
+        },
+        "magickImageReader.backgroundCustomCss": {
+          "type": "object",
+          "scope": "resource",
+          "markdownDescription": "%configuration.backgroundCustomCss%",
+          "properties": {
+            "background-color": {
+              "type": "string",
+              "description": "%configuration.backgroundCustomCss.backgroundColor%"
+            },
+            "background-image": {
+              "type": "string",
+              "description": "%configuration.backgroundCustomCss.backgroundImage%"
+            },
+            "background-repeat": {
+              "type": "string",
+              "description": "%configuration.backgroundCustomCss.backgroundRepeat%"
+            },
+            "background-attachment": {
+              "type": "string",
+              "description": "%configuration.backgroundCustomCss.backgroundAttachment%"
+            },
+            "background-position": {
+              "type": "string",
+              "description": "%configuration.backgroundCustomCss.backgroundPosition%"
+            },
+            "background-blend-mode": {
+              "type": "string",
+              "description": "%configuration.backgroundCustomCss.backgroundBlendMode%"
+            },
+            "background-size": {
+              "type": "string",
+              "description": "%configuration.backgroundCustomCss.backgroundSize%"
+            }
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "customEditors": [
       {
         "viewType": "magickImageReader.readImage",
-        "displayName": "Magick Image Reader",
+        "displayName": "%customEditor.readImage.displayName%",
         "selector": [
           {
             "filenamePattern": "*.aai"
@@ -60,13 +116,7 @@
             "filenamePattern": "*.avs"
           },
           {
-            "filenamePattern": "*.bmp"
-          },
-          {
-            "filenamePattern": "*.bmp2"
-          },
-          {
-            "filenamePattern": "*.bmp3"
+            "filenamePattern": "*.{bmp,bmp2,bmp3}"
           },
           {
             "filenamePattern": "*.cal"
@@ -207,9 +257,6 @@
             "filenamePattern": "*.j2k"
           },
           {
-            "filenamePattern": "*.jng"
-          },
-          {
             "filenamePattern": "*.jp2"
           },
           {
@@ -241,9 +288,6 @@
           },
           {
             "filenamePattern": "*.miff"
-          },
-          {
-            "filenamePattern": "*.mng"
           },
           {
             "filenamePattern": "*.mono"
@@ -339,25 +383,7 @@
             "filenamePattern": "*.plasma"
           },
           {
-            "filenamePattern": "*.png"
-          },
-          {
-            "filenamePattern": "*.png00"
-          },
-          {
-            "filenamePattern": "*.png24"
-          },
-          {
-            "filenamePattern": "*.png32"
-          },
-          {
-            "filenamePattern": "*.png48"
-          },
-          {
-            "filenamePattern": "*.png64"
-          },
-          {
-            "filenamePattern": "*.png8"
+            "filenamePattern": "*.{png,png00,png8,png24,png32,png48,png64,mng,jng}"
           },
           {
             "filenamePattern": "*.pnm"
@@ -435,13 +461,7 @@
             "filenamePattern": "*.sun"
           },
           {
-            "filenamePattern": "*.tif"
-          },
-          {
-            "filenamePattern": "*.tiff"
-          },
-          {
-            "filenamePattern": "*.tiff64"
+            "filenamePattern": "*.{tif,tiff,tiff64}"
           },
           {
             "filenamePattern": "*.tile"
@@ -511,7 +531,7 @@
       "explorer": [
         {
           "id": "magickImageReader.layerViewer",
-          "name": "Layers"
+          "name": "%views.explorer.layerViewer.name%"
         }
       ]
     }
@@ -524,19 +544,22 @@
     "package": "vsce package",
     "publish": "vsce publish"
   },
+  "engines": {
+    "vscode": "^1.14.0"
+  },
   "dependencies": {
-    "@imagemagick/magick-wasm": "0.0.3"
+    "@imagemagick/magick-wasm": "0.0.4"
   },
   "devDependencies": {
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.0.27",
-    "@types/vscode": "^1.47.0",
+    "@types/vscode": "^1.14.0",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
     "eslint": "^7.7.0",
     "mocha": "^8.1.1",
     "typescript": "^3.9.7",
-    "vsce": "^1.78.0",
+    "vsce": "^1.79.5",
     "vscode-test": "^1.4.0"
   }
 }

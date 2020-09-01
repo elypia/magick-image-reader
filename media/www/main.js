@@ -20,8 +20,8 @@
 (function () {
   class MagickEditor {
 
-    /** 
-     * @param {HTMLElement} wrapper 
+    /**
+     * @param {HTMLElement} wrapper
      */
     constructor(wrapper) {
       this.wrapper = wrapper;
@@ -37,15 +37,15 @@
 
       // if (documentContext._modified) {
         const documentData = new Uint8Array(documentContext._documentData.data);
-        const blob = new Blob([documentData], { 
-          'type': mimeType 
+        const blob = new Blob([documentData], {
+          'type': mimeType
         });
         const url = URL.createObjectURL(blob);
         imgElement.src = url;
       // } else {
       //   imgElement.src = documentContext.webviewUri;
       // }
-      
+
       console.log('Displaying image with MIME type:', mimeType);
       this.wrapper.append(imgElement);
     }
@@ -60,7 +60,7 @@
 	function round(value, min, max) {
 		return Math.min(Math.max(value, min), max);
   }
-  
+
   /**
    * The initial state of the context is sent through a meta field
    * in the <head> since it's a lot quicker to load.
@@ -68,10 +68,7 @@
   function getInitialContext() {
     const initialContentElement = document.getElementById('initial-context');
     const initialContent = JSON.parse(initialContentElement.getAttribute('data-initial-context'));
-    
-    editor.loadImage(initialContent);
-    canvasElement.style.height = initialContent._height;
-    canvasElement.style.width = initialContent._width;
+    return initialContent;
 	}
 
   // @ts-ignore
@@ -97,7 +94,12 @@
 
   const editor = new MagickEditor(canvasElement);
 
-  getInitialContext();
+  /** The context of this document, this can be updated to change the view. */
+  const documentContext = getInitialContext();
+
+  editor.loadImage(documentContext);
+  canvasElement.style.height = documentContext._height;
+  canvasElement.style.width = documentContext._width;
 
   for (const initiallyHiddenElement of initiallyHiddenElements)
     initiallyHiddenElement.classList.remove(hiddenClass);
@@ -142,4 +144,20 @@
 
   document.addEventListener('mouseup', stopDragging);
   document.addEventListener('mouseleave', stopDragging);
+
+  // body.addEventListener('wheel', (/** @type {WheelEvent} */ event) => {
+  //   if (event.ctrlKey)
+  //     event.preventDefault();
+
+  //   const isScrollWheelKeyPressed = documentContext._isMac ? event.altKey : event.ctrlKey;
+
+  //   if (!isScrollWheelKeyPressed && !event.ctrlKey)
+  //     return;
+
+  //   if (scale === 'fit')
+  //     firstZoom();
+
+  //   const delta = event.deltaY > 0 ? 1 : -1;
+  //   updateScale(scale * (1 - delta * SCALE_PINCH_FACTOR));
+  // }, { passive: false });
 }());

@@ -6,10 +6,52 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' ${cspSource} blob:; style-src 'self' 'nonce-${nonce}'; script-src 'nonce-${nonce}';">
   <title>Magick Image Reader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="${stylePath}" rel="stylesheet" type="text/css" nonce="${nonce}"/>
 
   <!-- Send initial data needed through data attributes in the HTML as it's faster. -->
   <meta id="initial-context" data-initial-context="${initialContext}">
+
+  <!-- Inline so we can interpolate variables in the stylesheet. -->
+  <style nonce="${nonce}">
+    /* Give everything a margin and padding of 0. */
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Make our DOM the entire webview. */
+    html, body {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: visible;
+    }
+
+    /* Wrapper element that contains the canvas and everything relative to it. */
+    #magick-image-wrapper {
+      position: absolute;
+    }
+
+    #magick-image {
+      ${imageBackgroundCss}
+    }
+
+    /* Allow users to grab and drag the body. */
+    .grabbable {
+      cursor: grab;
+    }
+
+    /* While users are in the process of grabbing the body. */
+    .grabbing:active {
+      cursor: grabbing;
+    }
+
+    /** Hide these elements, they can be unhidden through JavaScript. */
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 
 <body class="grabbable" draggable="true">

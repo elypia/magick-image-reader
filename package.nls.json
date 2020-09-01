@@ -1,0 +1,19 @@
+{
+  "displayName": "Magick Image Reader",
+  "description": "Uses ImageMagick to add read-only views of over 100 image formats in Visual Studio Code.",
+  "configuration.title": "Magick Image Reader",
+  "configuration.imageBackground.description": "The style to render behind the image.",
+  "configuration.imageBackground.checkered": "A checkered background, similar to that of most image editors.",
+  "configuration.imageBackground.transaparent": "No background whatsoever, similar to the default Visual Studio Code behavior.",
+  "configuration.imageBackground.custom": "Define custom CSS in the \"Magick Image Reader: Background Custom CSS\" property.",
+  "configuration.backgroundCustomCss": "If `#magickImageReader.imageBackground#` is set to `custom`, uses the styles (CSS) configured here.",
+  "configuration.backgroundCustomCss.backgroundColor": "This can use hex color codes, and color names to set a static background color.",
+  "configuration.backgroundCustomCss.backgroundImage": "This can specify a base64 encoded image, or CSS functions like linear-gradient.",
+  "configuration.backgroundCustomCss.backgroundRepeat": "If using background-image, set if it should repeat.",
+  "configuration.backgroundCustomCss.backgroundAttachment": "Set if the background is fixed or should scroll along with the content.",
+  "configuration.backgroundCustomCss.backgroundPosition": "Set where the background should be placed behind the image",
+  "configuration.backgroundCustomCss.backgroundBlendMode": "Configure how colors overlap, this is useful with more complex styles.",
+  "configuration.backgroundCustomCss.backgroundSize": "Set the size of the background.",
+  "customEditor.readImage.displayName": "Magick Image Reader",
+  "views.explorer.layerViewer.name": "Layers"
+}

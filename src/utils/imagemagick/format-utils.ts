@@ -21,7 +21,7 @@ import { MimeType } from "./mime-type";
 
 /**
  * Utilities for file and binary formats.
- * 
+ *
  * @since 0.2.0
  */
 export class FormatUtils {
@@ -70,7 +70,7 @@ export class FormatUtils {
    */
   public static getMimeType(format: MagickFormat): MimeType {
     switch (format) {
-      case MagickFormat.Bmp: 
+      case MagickFormat.Bmp:
       case MagickFormat.Bmp2:
       case MagickFormat.Bmp3:
         return MimeType.Bmp;
@@ -94,6 +94,7 @@ export class FormatUtils {
         return MimeType.Png;
       case MagickFormat.Svg:
         return MimeType.Svg;
+      case MagickFormat.Tif:
       case MagickFormat.Tiff:
       case MagickFormat.Tiff64:
         return MimeType.Tiff;

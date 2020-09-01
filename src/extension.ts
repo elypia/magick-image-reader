@@ -35,12 +35,12 @@ export function activate(context: vscode.ExtensionContext): void {
   const options = {
     supportsMultipleEditorsPerDocument: false
   };
-  
+
   const layerViewerId = 'magickImageReader.layerViewer';
   const layerViewer = new LayerTreeProvider(context);
 
   context.subscriptions.push(
-    vscode.window.registerCustomEditorProvider(readImageId, editorProvider, options), 
+    vscode.window.registerCustomEditorProvider(readImageId, editorProvider, options),
     vscode.window.registerTreeDataProvider(layerViewerId, layerViewer)
   );
 }
