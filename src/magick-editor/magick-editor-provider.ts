@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import { WebviewEventType } from '../utils/webview/webview-event-type';
 import { WebviewEvent } from '../utils/webview/webview-event';
 import { MagickDocumentProducer } from './magick-document-producer';
 import { BackgroundUtils } from '../utils/background-utils';
+import { StyleUtils } from '../utils/style-utils';
 
 /**
  * The actual editor for ImageMagick types.
@@ -119,17 +120,18 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
     );
 
     const imageBackground: string = config.get('imageBackground', 'checkered');
-    const style = BackgroundUtils.getBackgroundById(imageBackground).getBackground(config);
+    const cssProperties = BackgroundUtils.getBackgroundById(imageBackground).getBackground(config);
+    const selector = StyleUtils.convertToCssRuleset('#magick-image', cssProperties);
+    const styledHtml = StyleUtils.appendStyleToHtml(selector, staticHtmlTemplate);
 
     const variables: Map<string, string> = new Map<string, string>()
       .set('nonce', Nonce.generate())
       .set('scriptPath', scriptPath.toString())
       .set('stylePath', stylePath.toString())
-      .set('imageBackgroundCss', BackgroundUtils.convertToCssProperties(style))
       .set('initialContext', JSON.stringify(magickDocument.documentContext).replace(/"/g, '&quot;'));
 
     const interpolator: Interpolator = new Interpolator(variables);
-    const html = interpolator.interpolate(staticHtmlTemplate);
+    const html = interpolator.interpolate(styledHtml);
     return html;
   }
 

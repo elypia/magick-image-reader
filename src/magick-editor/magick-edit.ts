@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 /**
  * Stores the edit history of a Magick document.
- * 
+ *
  * @since 0.1.0
  */
 export interface MagickEdit {

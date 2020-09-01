@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import {DocumentNode} from './document-node';
  * Reads the file and provides a tree-view of all layers in the document.
  * Each layer can be clicked to give view the image in that particular layer
  * or group.
- * 
+ *
  * @since 0.1.0
  */
 export class LayerTreeProvider implements vscode.TreeDataProvider<DocumentNode> {

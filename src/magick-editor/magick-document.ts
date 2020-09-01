@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
     this._documentContext = documentContext;
   }
 
-  public get uri() { 
+  public get uri() {
     return this._documentContext.documentUri;
    }
 
-  public get documentContext(): MagickDocumentContext { 
+  public get documentContext(): MagickDocumentContext {
     return this._documentContext;
    }
 
@@ -64,14 +64,14 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
   }>());
   /**
    * Fired to tell VS Code that an edit has occured in the document.
-   * 
+   *
    * This updates the document's dirty indicator.
    */
   public readonly onDidChange = this._onDidChange.event;
 
   /**
    * Called by VS Code when there are no more references to the document.
-   * 
+   *
    * This happens when all editors for it have been closed.
    */
   dispose(): void {
@@ -81,7 +81,7 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
 
   /**
    * Called when the user edits the document in a webview.
-   * 
+   *
    * This fires an event to notify VS Code that the document has been edited.
    */
   makeEdit(edit: MagickEdit) {
@@ -156,7 +156,7 @@ export class MagickDocument extends Disposable implements vscode.CustomDocument 
 
     return backup;
   }
-  
+
   /**
    * @returns The URI and length of the document.
    */

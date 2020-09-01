@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import * as vscode from 'vscode';
  * Represents a page, group, layer, or image, within a file, and provides
  * contextualized information to the Visual Studio Code UI depending
  * on the file format.
- * 
+ *
  * @since 0.1.0
  */
 export class DocumentNode extends vscode.TreeItem {

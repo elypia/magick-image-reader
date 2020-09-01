@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@ import * as vscode from 'vscode';
 
 /**
  * Abstracts the internal Visual Studio Code Disposable class.
- * 
+ *
  * @since 0.1.0
  */
 export abstract class Disposable {
-  
+
 	private _isDisposed = false;
 	protected disposables: vscode.Disposable[];
 
@@ -49,7 +49,7 @@ export abstract class Disposable {
 
 	/**
 	 * Pops all items out of the array and calls dispose on all of them.
-	 * 
+	 *
 	 * @param disposables An array of disposable objects.
 	 */
 	public static disposeAll(disposables: vscode.Disposable[]): void {

@@ -10,7 +10,7 @@
   <!-- Send initial data needed through data attributes in the HTML as it's faster. -->
   <meta id="initial-context" data-initial-context="${initialContext}">
 
-  <!-- Inline so we can interpolate variables in the stylesheet. -->
+  <!-- Inline so we can append new styles programmatically. -->
   <style nonce="${nonce}">
     /* Give everything a margin and padding of 0. */
     * {
@@ -31,10 +31,6 @@
     /* Wrapper element that contains the canvas and everything relative to it. */
     #magick-image-wrapper {
       position: absolute;
-    }
-
-    #magick-image {
-      ${imageBackgroundCss}
     }
 
     /* Allow users to grab and drag the body. */

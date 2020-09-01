@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ export class Nonce {
 			const byte: number = Math.floor(Math.random() * this.maximumOffset) + this.minimum;
 			result += String.fromCharCode(byte);
 		}
-	
+
 		return result;
 	}
 }

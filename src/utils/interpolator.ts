@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 /**
  * Interpolate a set of variables into {@link string}s
- * 
+ *
  * @since 0.1.0
  */
 export class Interpolator {
@@ -27,10 +27,10 @@ export class Interpolator {
 
   /**
    * Interpolates all instances of ${variables} in the string provided.
-   * 
+   *
    * @param body The body to interpolate, returns with no changes
    * if there are no known elements to replace.
-   * @returns The body parameter but with any variables replaced for 
+   * @returns The body parameter but with any variables replaced for
    * actual values.
    */
   public interpolate(body: string): string {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2020 Elypia CIC and Contributors
+ * Copyright 2020-2020 Elypia CIC and Contributors (https://gitlab.com/Elypia/magick-image-reader/-/graphs/master)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 /**
  * This extension uses a strict format when sending
  * or receiving events from the webview to the extension.
- * 
+ *
  * @since 0.1.0
  */
 export interface GenericEvent<T> {
@@ -25,8 +25,8 @@ export interface GenericEvent<T> {
   /** The type of event that's taken place. */
   type: T;
 
-  /** 
-   * The value associated with the event. 
+  /**
+   * The value associated with the event.
    * This could be anything as it comes from the JavaScript portion
    * of the code so it should be validated.
    */
