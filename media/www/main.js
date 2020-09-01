@@ -116,7 +116,7 @@
   let pos3 = 0;
   let pos4 = 0;
 
-  const startDragging = (event) => {
+  const onPointerMove = (/** @type {PointerEvent} */ event) => {
     event.preventDefault();
     pos1 = pos3 - event.clientX;
     pos2 = pos4 - event.clientY;
@@ -127,20 +127,22 @@
     wrapperElement.style.left = (wrapperElement.offsetLeft - pos1) + "px";
   };
 
-  const stopDragging = () => {
-    body.removeEventListener('mousemove', startDragging);
+  const onPointerUp = (/** @type {PointerEvent} */ event) => {
+    body.removeEventListener('pointermove', onPointerMove);
+    body.classList.remove('moving');
   };
 
-  body.addEventListener('mousedown', (event) => {
+  body.addEventListener('pointerdown', (event) => {
     event.preventDefault();
     pos3 = event.clientX;
     pos4 = event.clientY;
 
-    body.addEventListener('mousemove', startDragging);
+    body.classList.add('moving');
+    body.addEventListener('pointermove', onPointerMove);
   });
 
-  document.addEventListener('mouseup', stopDragging);
-  document.addEventListener('mouseleave', stopDragging);
+  document.addEventListener('pointerup', onPointerUp);
+  document.addEventListener('pointerleave', onPointerUp);
 
   // body.addEventListener('wheel', (/** @type {WheelEvent} */ event) => {
   //   if (event.ctrlKey)

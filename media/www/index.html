@@ -33,14 +33,9 @@
       position: absolute;
     }
 
-    /* Allow users to grab and drag the body. */
-    .grabbable {
-      cursor: grab;
-    }
-
     /* While users are in the process of grabbing the body. */
-    .grabbing:active {
-      cursor: grabbing;
+    .moving {
+      cursor: move;
     }
 
     /** Hide these elements, they can be unhidden through JavaScript. */
@@ -50,7 +45,7 @@
   </style>
 </head>
 
-<body class="grabbable" draggable="true">
+<body draggable="true">
   <div id="magick-image-wrapper"></div>
 
   <!-- This must be loaded at the end. -->
