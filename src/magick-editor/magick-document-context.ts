@@ -15,7 +15,6 @@
  */
 
 import * as vscode from 'vscode';
-import { MagickImage } from '@imagemagick/magick-wasm/magick-image';
 import { MimeType } from '../utils/imagemagick/mime-type';
 
 /**

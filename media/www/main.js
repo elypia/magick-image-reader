@@ -83,23 +83,20 @@
   /** The element which contains the canvas and anything else with it. */
   const wrapperElement = document.getElementById('magick-image-wrapper');
 
-  /** The actual canvas element that displays the image. */
-  const canvasElement = document.getElementById('magick-image');
-
   /** All elements that start with the hidden class, should be unhidden when ready. */
   const initiallyHiddenElements = document.getElementsByClassName(hiddenClass);
 
   /** These elements should be hidden after the document is ready. */
   const hideAfterElements = document.getElementsByClassName('hide-after');
 
-  const editor = new MagickEditor(canvasElement);
+  const editor = new MagickEditor(wrapperElement);
 
   /** The context of this document, this can be updated to change the view. */
   const documentContext = getInitialContext();
 
   editor.loadImage(documentContext);
-  canvasElement.style.height = documentContext._height;
-  canvasElement.style.width = documentContext._width;
+  wrapperElement.style.height = documentContext._height;
+  wrapperElement.style.width = documentContext._width;
 
   for (const initiallyHiddenElement of initiallyHiddenElements)
     initiallyHiddenElement.classList.remove(hiddenClass);
