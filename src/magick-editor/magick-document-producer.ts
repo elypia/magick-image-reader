@@ -65,7 +65,7 @@ export class MagickDocumentProducer {
    */
   public static async readFile(uri: vscode.Uri): Promise<MagickDocumentContext> {
     if (uri.scheme === 'untitled')
-      throw new Error('Can\'t create new file with Image Magick Reader editor');
+      throw new Error("Can't create new file with Image Magick Reader editor");
 
     let documentContext: MagickDocumentContext | undefined = undefined;
 

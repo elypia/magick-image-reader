@@ -30,6 +30,7 @@
     async loadImage(documentContext) {
 
       const imgElement = document.createElement('img');
+      imgElement.id = 'magick-image';
       imgElement.width = documentContext._width;
       imgElement.height = documentContext._height;
 

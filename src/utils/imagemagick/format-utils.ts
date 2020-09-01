@@ -33,7 +33,7 @@ export class FormatUtils {
    */
   public static getExtension(path: string): string {
     if (!path)
-      throw new Error('Can\'t get the extension from a null or empty string');
+      throw new Error("Can't get the extension from a null or empty string");
 
     const split = path.split('.');
     const length = split.length;
@@ -51,7 +51,7 @@ export class FormatUtils {
    */
   public static getFormatInfo(extension: string): MagickFormatInfo {
     if (!extension)
-      throw new Error('Can\'t map null or empty extension to type MagickFormat');
+      throw new Error("Can't map null or empty extension to type MagickFormat");
 
     extension = extension.toUpperCase();
 
