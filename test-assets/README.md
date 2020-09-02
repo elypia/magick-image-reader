@@ -12,6 +12,7 @@ Assets used for testing:
 | pandaAww        | [Elypia Emotes] by [Elypia CIC and Contributors] is licensed under [CC BY 4.0]. |
 | matrix          | [Digital Rain Animation] by [Jahobr] is marked with [CC0 1.0].                  |
 | kemonomini-girl | [Kemonomimi Girl in Chibi Style] by [Niabot] is licensed under [CC BY-SA 3.0].  |
+| moe-anime-girl  | [Moe Anime Girl in Sailor Fuku] by [Akane-K] is marked with [CC0 1.0].          |
 
 ## Formats
 Regarding image file formats, this may include many double ups of the same format
@@ -31,6 +32,9 @@ and continues to work.
 
 [Kemonomimi Girl in Chibi Style]: https://commons.wikimedia.org/wiki/File:Kemonomimi_girl_in_chibi_style.svg
 [Niabot]: https://commons.wikimedia.org/wiki/User:Niabot
+
+[Moe Anime Girl in Sailor Fuku]: https://commons.wikimedia.org/w/index.php?curid=89081491
+[Akane-K]: https://pixabay.com/users/akane-k-8075952/
 
 [CC BY 4.0]: https://creativecommons.org/licenses/by/4.0/
 [CC BY-SA 3.0]: https://creativecommons.org/licenses/by-sa/3.0/

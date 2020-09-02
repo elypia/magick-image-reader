@@ -20,27 +20,26 @@
 
     /* Make our DOM the entire webview. */
     html, body {
-      height: 100%;
       width: 100%;
+      height: 100%;
+    }
+
+    /* Center the image canvas. */
+    body {
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: visible;
     }
 
-    /* Wrapper element that contains the canvas and everything relative to it. */
-    #magick-image-wrapper {
-      position: absolute;
+    /* Disable the default fitting behavior. */
+    #magick-image {
+      max-width: none;
+      max-height: none;
     }
 
     /* While users are in the process of grabbing the body. */
     .moving {
       cursor: move;
-    }
-
-    /** Hide these elements, they can be unhidden through JavaScript. */
-    .hidden {
-      display: none;
     }
   </style>
 </head>
