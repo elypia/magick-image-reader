@@ -83,33 +83,28 @@ export class MagickDocumentProducer {
 
       try {
         ImageMagick.read(fileData, magickReadSettings, (image: MagickImage) => {
-          console.debug('Succesfully read document:', image.toString());
-          const imageFormat: string = image.format;
-          const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
-
-          if (fileFormat) {
-            if (!magickFileFormat)
-              vscode.window.showWarningMessage(`File has no extension, but binary data represents ${magickImageFormat.format}.`);
-
-            else if (magickFileFormat.format !== magickImageFormat.format)
-              vscode.window.showWarningMessage(`File extension was ${magickFileFormat.format}, but binary data represents ${magickImageFormat.format}.`);
-          }
-
-          if (this.imgFriendlyFormats.includes(magickImageFormat.format)) {
-            console.log('Format is natively supported by img element, not converting.');
-            const mime = FormatUtils.getMimeType(magickImageFormat.format);
-            documentContext = new MagickDocumentContext(uri, false, fileData, mime, image.width, image.height, MagickDocumentProducer.isMac);
-          } else {
-            image.write((bytesToWrite) => {
-              console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
-              const convertedBytes = Buffer.from(bytesToWrite);
-              documentContext = new MagickDocumentContext(uri, true, convertedBytes, MimeType.Png, image.width, image.height, MagickDocumentProducer.isMac);
-            }, MagickFormat.Png);
-          }
+          documentContext = this.processDocument(image, uri, fileData);
         });
       } catch (err) {
-        console.error('Failed to load document or convert to a viewable format.\n', err);
-        throw err;
+        console.log('Failed to load image, trying again, this time ignoring file extension.');
+
+        try {
+          ImageMagick.read(fileData, (image: MagickImage) => {
+            const imageFormat: string = image.format;
+            const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
+
+            if (!magickFileFormat)
+              vscode.window.showWarningMessage(`File has no extension; trying as ${magickImageFormat.format} but may yield poor results.`);
+
+            else if (magickFileFormat.format !== magickImageFormat.format)
+              vscode.window.showWarningMessage(`File isn't a ${magickFileFormat.format}; trying as ${magickImageFormat.format} but may yield poor results.`);
+
+            documentContext = this.processDocument(image, uri, fileData);
+          });
+        } catch (err2) {
+          console.error('Failed to load document or convert to a viewable format.\n', err2);
+          throw err;
+        }
       }
     });
 
@@ -117,5 +112,30 @@ export class MagickDocumentProducer {
       throw new Error('Unable to convert document to viewable format');
 
     return documentContext;
+  }
+
+  private static processDocument(image: MagickImage, uri: vscode.Uri, fileData: Uint8Array): MagickDocumentContext {
+    let documentContext: MagickDocumentContext | undefined = undefined;
+
+    console.debug('Succesfully read document:', image.toString());
+    const imageFormat: string = image.format;
+    const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
+
+    if (this.imgFriendlyFormats.includes(magickImageFormat.format)) {
+      console.log('Format is natively supported by img element, not converting.');
+      const mime = FormatUtils.getMimeType(magickImageFormat.format);
+      documentContext = new MagickDocumentContext(uri, false, fileData, mime, image.width, image.height, MagickDocumentProducer.isMac);
+    } else {
+      image.write((bytesToWrite) => {
+        console.log('Converted document to PNG for previewing with length:', bytesToWrite.length);
+        const convertedBytes = Buffer.from(bytesToWrite);
+        documentContext = new MagickDocumentContext(uri, true, convertedBytes, MimeType.Png, image.width, image.height, MagickDocumentProducer.isMac);
+      }, MagickFormat.Png);
+    }
+
+    if (documentContext)
+      return documentContext;
+
+    throw new Error('Unable to load image');
   }
 }
