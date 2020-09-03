@@ -121,7 +121,7 @@ export class MagickEditorProvider implements vscode.CustomReadonlyEditorProvider
 
     const imageBackground: string = config.get('imageBackground', 'checkered');
     const cssProperties = BackgroundUtils.getBackgroundById(imageBackground).getBackground(config);
-    const selector = StyleUtils.convertToCssRuleset('#magick-image', cssProperties);
+    const selector = StyleUtils.convertToCssRuleset('img', cssProperties);
     const styledHtml = StyleUtils.appendStyleToHtml(selector, staticHtmlTemplate);
 
     const variables: Map<string, string> = new Map<string, string>()

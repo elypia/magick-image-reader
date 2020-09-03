@@ -34,11 +34,29 @@
   /** The image element that contains the file opened. */
   const magickImage = createImage(documentContext);
 
+  /** The last recorded pointerX position. */
+  let pointerX = 0;
+
+  /** The last recoreded pointerY position. */
+  let pointerY = 0;
+
   /** The translation to apply on the X axis from manually dragging the image. */
   let translateX = 0;
 
   /** The translation to apply on the Y axis from manually dragging the image. */
   let translateY = 0;
+
+  /** Translation to apply to the image from panning. */
+  let transformTranslate = "translate(0)";
+
+  /**
+   * True by default, if we should set the scale dynamically
+   * as the view changes.
+   *
+   * This will be automatically set to false if the user
+   * interacts with the view at all such as manually panning or zooming.
+   */
+  let bestFit = true;
 
   magickImageWrapper.append(magickImage);
   magickImageWrapper.style.height = documentContext._height;
@@ -91,20 +109,33 @@
     return magickImage;
   }
 
-  const onPointerMove = (/** @type {PointerEvent} */ event) => {
+  let isMoving = false;
+
+  body.addEventListener('pointermove', (/** @type {PointerEvent} */ event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+
+    if (!isMoving)
+      return;
+
     event.preventDefault();
+
+    console.log(scale);
 
     translateX += event.movementX;
     translateY += event.movementY;
 
-    const translate = `translate(${translateX}px, ${translateY}px)`;
+    const left = (body.clientWidth - magickImage.naturalWidth) / 2;
+    const top = (body.clientHeight - magickImage.naturalHeight) / 2;
 
-    console.log('#magick-image translate style has been set to:', translate);
-    magickImageWrapper.style.transform = translate;
-  };
+    const translate = `translate(${translateX}px, ${translateY}px)`;
+    transformTranslate = translate;
+    updateMagickImageWrapper();
+  });
 
   const onPointerUp = (/** @type {PointerEvent} */ event) => {
-    body.removeEventListener('pointermove', onPointerMove);
+    console.log(`Pointerup event received: ${event.button}`)
+    isMoving = false;
     body.classList.remove('moving');
   };
 
@@ -112,10 +143,12 @@
     if (event.button !== 0)
       return;
 
+    console.log(`Pointerdown event received: ${event.button}`)
+
     event.preventDefault();
 
     body.classList.add('moving');
-    body.addEventListener('pointermove', onPointerMove);
+    isMoving = true;
   });
 
   document.addEventListener('pointerup', onPointerUp);
@@ -134,36 +167,38 @@
    */
   let scale = 1;
 
-  magickImage.addEventListener('load', () => {
-    const fitWidth = body.clientWidth / magickImage.naturalWidth;
-    const fitHeight = body.clientHeight / magickImage.naturalHeight;
+  function fitImageToBody() {
+    const fitWidth = body.clientWidth / documentContext._width;
+    const fitHeight = body.clientHeight / documentContext._height;
 
-    scale = Math.min(fitWidth, fitHeight);
+    const newScale = Math.min(fitWidth, fitHeight);
 
-    updateScale(scale);
-    console.log('Scale initialized to:', scale);
+    if (newScale < 1)
+      updateScale(newScale);
+  }
+
+  magickImage.addEventListener('load', fitImageToBody)
+
+  window.addEventListener('resize', () => {
+    console.log(body.clientWidth, body.clientHeight);
+
+    if (bestFit)
+      fitImageToBody();
   });
+
+  function updateMagickImageWrapper() {
+    magickImageWrapper.style.transform = transformTranslate;
+  }
 
   /**
    * @param {number} newScale
    */
   function updateScale(newScale) {
-    if (!magickImage || !magickImage.parentElement)
-      return;
-
     scale = newScale;
     console.log('Scale updated to:', scale);
 
-    const dx = (window.scrollX + body.clientWidth / 2) / body.scrollWidth;
-    const dy = (window.scrollY + body.clientHeight / 2) / body.scrollHeight;
-
-    magickImage.style.width = `${(magickImage.naturalWidth * newScale)}px`;
-    magickImage.style.height = `${(magickImage.naturalHeight * newScale)}px`;
-
-    const newScrollX = body.scrollWidth * dx - body.clientWidth / 2;
-    const newScrollY = body.scrollHeight * dy - body.clientHeight / 2;
-
-    window.scrollTo(newScrollX, newScrollY);
+    magickImage.style.width = `${documentContext._width * newScale}px`;
+    magickImage.style.height = `${documentContext._height * newScale}px`;
   }
 
   body.addEventListener('wheel', (/** @type {WheelEvent} */ event) => {
@@ -179,9 +214,17 @@
     const delta = (event.deltaY > 0) ? scaleDelta : -scaleDelta;
     const newScale = scale * (1 - delta);
 
-    if (newScale < minScale || newScale > maxScale)
+    if (!fitsScale(newScale))
       return;
 
     updateScale(newScale);
   }, {passive: false});
+
+  /**
+   * @param {number} scale The scale to check.
+   * @returns {boolean} If the scale is within the bounds of the image viewer.
+   */
+  function fitsScale(scale) {
+    return scale >= minScale && scale <= maxScale;
+  }
 }());

@@ -101,7 +101,7 @@
         "displayName": "%customEditor.readImage.displayName%",
         "selector": [
           {
-            "filenamePattern": "*.{aai,art,arw,avi,avif,avs,bmp,bmp2,bmp3,cal,cals,canvas,caption,cin,clip,cmyk,cmyka,cr2,cr3,crw,cube,cur,cut,dcm,dcr,dcraw,dcx,dds,dng,dpx,dxt1,dxt5,epi,ept,ept2,ept3,fax,fits,flv,fractal,ftp,gif,gif87,gradient,gray,graya,hald,hdr,heic,heif,hrz,icb,inline,j2c,j2k,jng,jp2,jpe,jpeg,jpg,jpt,label,m2v,map,mask,mat,miff,mng,mono,mov,mpc,mpeg,mpg,mrw,msl,mtv,mvg,nef,null,orf,otb,pal,palm,pango,pbm,pcd,pcds,pcx,pdb,pef,pes,pfa,pfb,pfm,pgm,picon,pict,pjpeg,plasma,png,png00,png24,png32,png48,png64,png8,pnm,pocketmod,ppm,psb,psd,ptif,pwp,radial-gradient,raf,ras,raw,rgb,rgb565,rgba,rgbo,rgf,rla,rle,scr,screenshot,sct,sfw,sgi,stegano,sun,tif,tiff,tiff64,tile,tim,ttf,uyvy,vicar,vid,viff,vips,vst,wbmp,webp,wpg,x3f,xbm,xc,xcf,xv,ycbcr,ycbcra,yuv}"
+            "filenamePattern": "*.{aai,art,arw,avi,avif,avs,bmp,bmp2,bmp3,cal,cals,canvas,caption,cin,clip,cmyk,cmyka,cr2,cr3,crw,cube,cur,cut,dcm,dcr,dcraw,dcx,dds,dng,dpx,dxt1,dxt5,epi,ept,ept2,ept3,fax,fits,flv,fractal,ftp,gif,gif87,gradient,gray,graya,hald,hdr,heic,heif,hrz,icb,ico,inline,j2c,j2k,jng,jp2,jpe,jpeg,jpg,jpt,label,m2v,map,mask,mat,miff,mng,mono,mov,mpc,mpeg,mpg,mrw,msl,mtv,mvg,nef,null,orf,otb,pal,palm,pango,pbm,pcd,pcds,pcx,pdb,pef,pes,pfa,pfb,pfm,pgm,picon,pict,pjpeg,plasma,png,png00,png24,png32,png48,png64,png8,pnm,pocketmod,ppm,psb,psd,ptif,pwp,radial-gradient,raf,ras,raw,rgb,rgb565,rgba,rgbo,rgf,rla,rle,scr,screenshot,sct,sfw,sgi,stegano,sun,tif,tiff,tiff64,tile,tim,ttf,uyvy,vicar,vid,viff,vips,vst,wbmp,webp,wpg,x3f,xbm,xc,xcf,xv,ycbcr,ycbcra,yuv}"
           }
         ],
         "priority": "default"

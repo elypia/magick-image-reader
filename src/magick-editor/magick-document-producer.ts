@@ -22,6 +22,7 @@ import { MagickFormatInfo } from '@imagemagick/magick-wasm/magick-format-info';
 import { FormatUtils } from '../utils/imagemagick/format-utils';
 import { MagickDocumentContext } from './magick-document-context';
 import { MimeType } from '../utils/imagemagick/mime-type';
+import { MagickReadSettings } from '@imagemagick/magick-wasm/settings/magick-read-settings';
 
 /**
  * @since 0.2.0
@@ -77,8 +78,11 @@ export class MagickDocumentProducer {
       if (magickFileFormat && !magickFileFormat.isReadable)
         throw new Error(`Unable to read ${magickFileFormat.format} files, please notify the developer`);
 
+      const magickReadSettings = new MagickReadSettings();
+      magickReadSettings.format = magickFileFormat?.format;
+
       try {
-        ImageMagick.read(fileData, (image: MagickImage) => {
+        ImageMagick.read(fileData, magickReadSettings, (image: MagickImage) => {
           console.debug('Succesfully read document:', image.toString());
           const imageFormat: string = image.format;
           const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
