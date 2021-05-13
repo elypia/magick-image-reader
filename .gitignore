@@ -134,6 +134,7 @@ dist
 ######################
 *.vsix
 .vscode/
+.vscode-test/
 
 ###########
 # Project #

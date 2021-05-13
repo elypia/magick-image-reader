@@ -21,7 +21,7 @@
 export class Nonce {
 
 	/** The number of characters the nonce can be. */
-	private static readonly nonceLength: number = 128;
+	private static readonly defaultNonceLength: number = 128;
 
 	/** The minimum ascii table from the ascii table to add. */
 	private static readonly minimum: number = 97;
@@ -32,10 +32,10 @@ export class Nonce {
 	/**
 	 * @returns A generated long string made up of a-z characters.
 	 */
-	public static generate(): string {
+  public static generate(nonceLength: number = Nonce.defaultNonceLength): string {
 		let result: string = '';
 
-		for (let i = 0; i < this.nonceLength; i++) {
+    for (let i = 0; i < nonceLength; i++) {
 			const byte: number = Math.floor(Math.random() * this.maximumOffset) + this.minimum;
 			result += String.fromCharCode(byte);
 		}

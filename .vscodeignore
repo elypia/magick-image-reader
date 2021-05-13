@@ -1,5 +1,7 @@
-.github/
 .vscode/
+.vscode-test/
+.nycrc
+out/test/
 src/
 test-assets/
 .gitignore
