@@ -1,15 +1,15 @@
 <div align="center">
 
 # Magick Image Reader
-[![Matrix]][matrix-community] [![Discord]][discord-guild] [![Marketplace]][vscode-market-link] [![Build]][gitlab] [![Coverage]][gitlab] [![Donate]][elypia-donate]
+[![Matrix]][matrix-community] [![Discord]][discord-guild] [![Installs]][vscode-market-link] [![Downloads]][vscode-market-link] [![Build]][gitlab] [![Donate]][elypia-donate]
 </div>
 
-**HEADS UP: This extension is in very early development and depends heavily on [Magick.WASM](https://github.com/dlemstra/Magick.WASM) which is also in very early development. While this extension is functional, it should not be considered stable yet.**
+**HEADS UP: This extension is in very early development and depends heavily on [Magick.WASM](https://github.com/dlemstra/Magick.WASM) which is also in very early development. While this extension is functional, it shouldn't be considered stable.**
 
 ## About
-**Magick Image Reader** is an extension for [Visual Studio Code](https://code.visualstudio.com/) 
+**Magick Image Reader** is an extension for [Visual Studio Code](https://code.visualstudio.com/)
 which adds support for reading [over 100 image formats](https://imagemagick.org/script/formats.php)
-without leaving the application. It's primary use is for quickly accessing images when managing image 
+without leaving the application. It's primary use is for quickly accessing images when managing image
 repositories without the need to leave Visual Studio Code or open another program.
 
 This project would've been a massive pain without free and open-source software
@@ -17,11 +17,11 @@ like [ImageMagick](https://imagemagick.org/) and [Magick.WASM](https://github.co
 If this is useful for your workflow, please also consider checking them out or sponsoring their work.
 
 ## Features
-This extension was made with one feature in mind, which is to read 
-additional document formats, however as we're integrating with 
+This extension was made with one feature in mind, which is to read
+additional document formats, however as we're integrating with
 ImageMagick, we'll be additional features in future to make the most out of it.
 
-The first time you interact with the extension there will be a initializaton 
+The first time you interact with the extension there will be a initializaton
 which will last a few seconds, from there all images should load relatively fast.
 
 ### Reading Additional Document Formats
@@ -44,7 +44,7 @@ formats that Visual Studio Code already supported natively:
 * SGI
 * XBM
 
-<!-- 
+<!--
 ### Layer Tree View [Not Implemented]
 Simiarly to the **NPM Scripts** or **Outline** panels on the side
 of Visual Studio Code, one can view a **Layers** tree-view which will
@@ -71,7 +71,7 @@ in the editor when you open an image.
 This project is open-source under the [Apache 2.0] license!
 While not legal advice, you can find a [TL;DR] that sums up what
 you're allowed and not allowed to do along with any requirements if you
-want to use or derive work from this source code!
+want to use or derive work from this repository!
 
 [matrix-community]: https://matrix.to/#/+elypia:matrix.org "Matrix Invite"
 [discord-guild]: https://discord.com/invite/hprGMaM "Discord Invite"
@@ -83,7 +83,7 @@ want to use or derive work from this source code!
 
 [Matrix]: https://img.shields.io/matrix/elypia:matrix.org?logo=matrix "Matrix Shield"
 [Discord]: https://discord.com/api/guilds/184657525990359041/widget.png "Discord Shield"
-[Marketplace]: https://img.shields.io/visual-studio-marketplace/i/elypia.magick-image-reader?color=%23007ACC&logo=visual%20studio%20code "Visual Studio Code Marketplace"
+[Installs]: https://img.shields.io/visual-studio-marketplace/i/elypia.magick-image-reader?color=%23007ACC&logo=visual%20studio%20code "Visual Studio Code Marketplace"
+[Downloads]: https://img.shields.io/visual-studio-marketplace/d/elypia.magick-image-reader?color=%23007ACC&logo=visual%20studio%20code
 [Build]: https://gitlab.com/Elypia/magick-image-reader/badges/master/pipeline.svg "GitLab Build Shield"
-[Coverage]: https://gitlab.com/Elypia/magick-image-reader/badges/master/coverage.svg "GitLab Coverage Shield"
 [Donate]: https://img.shields.io/badge/elypia-donate-blueviolet "Donate Shield"
