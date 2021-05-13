@@ -37,13 +37,7 @@ export class DocumentNode extends vscode.TreeItem {
     ) {
         super(label, collapsibleState);
         this.children = [];
-    }
-
-    public get tooltip(): string {
-        return this.label;
-    }
-
-    public get description(): string {
-        return this.label;
+        this.tooltip = this.label;
+        this.description = this.label;
     }
 }

@@ -16,7 +16,7 @@
 
 import * as vscode from 'vscode';
 import { ImageMagick } from '@imagemagick/magick-wasm';
-import { MagickImage } from '@imagemagick/magick-wasm/magick-image';
+import { IMagickImage } from '@imagemagick/magick-wasm/magick-image';
 import { MagickFormat } from '@imagemagick/magick-wasm/magick-format';
 import { MagickFormatInfo } from '@imagemagick/magick-wasm/magick-format-info';
 import { FormatUtils } from '../utils/imagemagick/format-utils';
@@ -82,14 +82,14 @@ export class MagickDocumentProducer {
       magickReadSettings.format = magickFileFormat?.format;
 
       try {
-        ImageMagick.read(fileData, magickReadSettings, (image: MagickImage) => {
+        ImageMagick.read(fileData, magickReadSettings, (image) => {
           documentContext = this.processDocument(image, uri, fileData);
         });
       } catch (err) {
         console.log('Failed to load image, trying again, this time ignoring file extension.');
 
         try {
-          ImageMagick.read(fileData, (image: MagickImage) => {
+          ImageMagick.read(fileData, (image) => {
             const imageFormat: string = image.format;
             const magickImageFormat: MagickFormatInfo = FormatUtils.getFormatInfo(imageFormat);
 
@@ -114,7 +114,7 @@ export class MagickDocumentProducer {
     return documentContext;
   }
 
-  private static processDocument(image: MagickImage, uri: vscode.Uri, fileData: Uint8Array): MagickDocumentContext {
+  private static processDocument(image: IMagickImage, uri: vscode.Uri, fileData: Uint8Array): MagickDocumentContext {
     let documentContext: MagickDocumentContext | undefined = undefined;
 
     console.debug('Succesfully read document:', image.toString());
