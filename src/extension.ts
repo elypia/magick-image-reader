@@ -28,21 +28,21 @@ export function activate(context: vscode.ExtensionContext): void {
     console.info('ImageMagick Version:', Magick.imageMagickVersion);
     console.info('Delegates:', Magick.delegates);
     console.info('Quantum Depth:', Quantum.depth);
+
+    const readImageId = 'magickImageReader.readImage';
+    const editorProvider = new MagickEditorProvider(context);
+    const options = {
+      supportsMultipleEditorsPerDocument: false
+    };
+
+    const layerViewerId = 'magickImageReader.layerViewer';
+    const layerViewer = new LayerTreeProvider(context);
+
+    context.subscriptions.push(
+      vscode.window.registerCustomEditorProvider(readImageId, editorProvider, options),
+      vscode.window.registerTreeDataProvider(layerViewerId, layerViewer)
+    );
   });
-
-  const readImageId = 'magickImageReader.readImage';
-  const editorProvider = new MagickEditorProvider(context);
-  const options = {
-    supportsMultipleEditorsPerDocument: false
-  };
-
-  const layerViewerId = 'magickImageReader.layerViewer';
-  const layerViewer = new LayerTreeProvider(context);
-
-  context.subscriptions.push(
-    vscode.window.registerCustomEditorProvider(readImageId, editorProvider, options),
-    vscode.window.registerTreeDataProvider(layerViewerId, layerViewer)
-  );
 }
 
 export function deactivate(): void {
