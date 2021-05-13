@@ -1,4 +1,4 @@
-image: node:12.18.3-alpine3.12
+image: node:12.22.1-alpine3.12
 
 cache:
   policy: pull-push
@@ -12,12 +12,21 @@ build:
   stage: build
   script:
     - npm run compile
+  artifacts:
+    paths:
+      - "./out/"
+    untracked: false
+
+test:
+  stage: test
+  image: node:12.22.1-buster
+  script:
+    - apt update; apt install -y libasound2 libgbm-dev libgtk-3-0 libnss3 xvfb; xvfb-run -a npm run test;
 
 deploy:
   stage: deploy
-  only: 
+  only:
     - tags
-  script: 
-    - npm run compile
+  script:
     - npm run package
     - npm run publish
