@@ -21,12 +21,16 @@ test:
   stage: test
   image: node:12.22.1-buster
   script:
-    - apt update; apt install -y libasound2 libgbm-dev libgtk-3-0 libnss3 xvfb; xvfb-run -a npm run test;
+    - |
+      apt update
+      apt install -y libasound2 libgbm-dev libgtk-3-0 libnss3 xvfb
+      xvfb-run -a npm run test
 
 deploy:
   stage: deploy
   only:
     - tags
   script:
-    - npm run package
-    - npm run publish
+    - |
+      npm run package
+      npm run publish
