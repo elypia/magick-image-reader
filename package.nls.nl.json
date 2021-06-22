@@ -1,3 +1,19 @@
 {
-    "displayName": "Magick Image Reader"
+    "displayName": "Magick Image Reader",
+    "views.explorer.layerViewer.name": "Lagen",
+    "customEditor.readImage.displayName": "Magick Image Reader",
+    "configuration.backgroundCustomCss.backgroundSize": "Stel de grootte van de achtergrond in.",
+    "configuration.backgroundCustomCss.backgroundBlendMode": "Configureer hoe kleuren elkaar overlappen, dit is handig bij complexere stijlen.",
+    "configuration.backgroundCustomCss.backgroundPosition": "Stel in waar de achtergrond achter de afbeelding moet komen",
+    "configuration.backgroundCustomCss.backgroundAttachment": "Stel in of de achtergrond vast staat of mee moet scrollen met de inhoud.",
+    "configuration.backgroundCustomCss.backgroundRepeat": "Als u een achtergrondafbeelding gebruikt, stel in of deze moet worden herhaald.",
+    "configuration.backgroundCustomCss.backgroundImage": "Dit kan een met base64 gecodeerde afbeelding specificeren, of CSS-functies zoals lineair-gradiënt.",
+    "configuration.backgroundCustomCss.backgroundColor": "Dit kan hexadecimale kleurcodes en kleurnamen gebruiken om een statische achtergrondkleur in te stellen.",
+    "configuration.backgroundCustomCss": "Als `#magickImageReader.imageBackground#` is ingesteld op `custom`, worden de hier geconfigureerde stijlen (CSS) gebruikt.",
+    "configuration.imageBackground.custom": "Definieer CSS in de eigenschap \"Magick Image Reader: Background Custom CSS\".",
+    "configuration.imageBackground.transaparent": "Geen enkele achtergrond, vergelijkbaar met het standaardgedrag van Visual Studio Code.",
+    "configuration.imageBackground.checkered": "Een geruite achtergrond, vergelijkbaar met die van de meeste afbeeldingseditors.",
+    "configuration.imageBackground.description": "De stijl die achter de afbeelding moet worden weergegeven.",
+    "configuration.title": "Magick Image Reader",
+    "description": "Gebruikt ImageMagick om alleen-lezen weergaven van meer dan 100 afbeeldingsindelingen in Visual Studio Code toe te voegen."
 }
